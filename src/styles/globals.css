@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    @apply p-0 m-0 box-border
+}
+
+li {
+    @apply list-none
+}
+
+a {
+    @apply no-underline text-neutral-900
+}
+
+button {
+    @apply cursor-pointer
+}
