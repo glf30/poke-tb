@@ -15,49 +15,68 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section id="landing" className="bg-red-500">
-        <nav className="flex flex-row mx-auto w-full max-w-6xl justify-between py-2 px-5 h-36">
-            <div className="flex items-center">
-                <figure className="w-14 h-14 flex items-center justify-center">
-                    <Image id="poke-logo" src="./assets/noun-pokeball-594337.svg" width={48} height={48} alt="" />
-                </figure>
-                <h1 className="text-neutral-900 text-2xl font-semibold">PokeTB</h1>
-            </div>
-            <ul className="flex items-center justify-between">
-                <li className="mx-3">
-                   <a href="#" className="text-lg font-medium text-neutral-900">
-                      Home
-                    </a> 
-                </li>
-                <li className="mx-3">
-                    <a href="#" className="text-lg font-medium text-neutral-900">
-                        Dark/Light Icon 
-                    </a> 
-                </li>
-                <li className="mx-3">
-                    <a href="#" className="text-lg font-medium text-neutral-900">
-                        Log In
-                    </a> 
-                </li>
-                <li className="mx-3">
-                    <a href="#" className="text-lg font-medium text-neutral-900">
-                        Sign Up
-                    </a> 
-                </li>
-            </ul>
+        <nav className="mx-auto flex h-24 w-full max-w-6xl flex-row justify-between px-5 py-2">
+          <div className="flex items-center">
+            <figure className="flex h-14 w-14 items-center justify-center">
+              <Image
+                id="poke-logo"
+                src="./assets/noun-pokeball-594337.svg"
+                width={48}
+                height={48}
+                alt=""
+              />
+            </figure>
+            <h1 className="text-2xl font-semibold text-neutral-900">PokeTB</h1>
+          </div>
+          <ul className="flex items-center justify-between">
+            <li className="mx-3">
+              <a href="#" className="text-lg font-medium text-neutral-900">
+                Home
+              </a>
+            </li>
+            <li className="mx-3">
+              <a href="#" className="text-lg font-medium text-neutral-900">
+                Dark/Light Icon
+              </a>
+            </li>
+            <li className="mx-3">
+              <a href="#" className="text-lg font-medium text-neutral-900">
+                Log In
+              </a>
+            </li>
+            <li className="mx-3">
+              <a href="#" className="text-lg font-medium text-neutral-900">
+                Sign Up
+              </a>
+            </li>
+          </ul>
         </nav>
         <header id="search">
-            <div className="flex flex-col items-center py-6 mx-3">
-                <h1 className="text-neutral-900 font-bold text-7xl text-center mb-6">Choose a Pokemon!</h1>
-                <div className="flex p-2 items-center border-2 border-white rounded-full bg-white w-full max-w-xl">
-                    <input type="text" className="w-full pr-8 text-2xl indent-5 outline-none" placeholder="Enter a name or number"/>
-                    <button type="submit" className="bg-white">
-                      <Image id="search-icon" className="mr-3" src="./assets/search_icon.svg" width={32} height={32} alt="" />
-                    </button>
-                </div>
+          <div className="mx-3 flex flex-col items-center py-6">
+            <h1 className="mb-6 text-center text-7xl font-bold text-neutral-900">
+              Choose a Pokemon!
+            </h1>
+            <div className="flex w-full max-w-xl items-center rounded-full border-2 border-white bg-white p-2">
+              <input
+                type="text"
+                className="w-full pr-8 indent-5 text-2xl outline-none"
+                placeholder="Enter a name or number"
+              />
+              <button type="submit" className="bg-white">
+                <Image
+                  id="search-icon"
+                  className="mr-3"
+                  src="./assets/search_icon.svg"
+                  width={32}
+                  height={32}
+                  alt=""
+                />
+              </button>
             </div>
+          </div>
         </header>
-    </section>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      </section>
+      {/* <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
@@ -90,7 +109,150 @@ export default function Home() {
             {hello.data ? hello.data.greeting : "Loading tRPC query..."}
           </p>
         </div>
-      </main>
+      </main> */}
+      <section id="results">
+        <div className="w-full py-12">
+          <div className="mx-auto my-0 w-full max-w-6xl">
+            <div className="flex flex-col items-center">
+              <div className="flex w-full flex-col items-center bg-amber-100">
+                <h1 className="text-4xl font-bold ">Advanced Search</h1>
+                <div id="filter">
+                  <h3 className="text-center text-xl">Filter by Type</h3>
+                  <div className="my-2 flex w-full max-w-5xl flex-wrap items-center justify-center">
+                    {/* map types */}
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                    <div className="mx-2 my-2 flex justify-between">
+                      <input type="checkbox" name="type-filter" id="" />
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                        NORMAL
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3 className="text-center text-xl">Sort by:</h3>
+              <select id="sort" className="p-2">
+                <option value="NUMBER_LOW_TO_HIGH" selected>
+                  Number - Low to High
+                </option>
+                <option value="NUMBER_HIGH_TO_LOW">Number - High to Low</option>
+                <option value="ALPHA_A_TO_Z">Name - A to Z</option>
+                <option value="ALPHA_Z_TO_A">Name - Z to A</option>
+              </select>
+              <button
+                type="button"
+                className="w-1/5 rounded-3xl bg-red-500 p-3 text-white"
+              >
+                Go!
+              </button>     
+            </div>
+            <div className="w-full bg-red-900">
+                {/* <i class="fas fa-spinner results__loading--spinner"></i> */}
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
