@@ -1,10 +1,82 @@
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
+import type { InferGetStaticPropsType, GetStaticProps } from "next";
 
 import { api } from "~/utils/api";
 
-export default function Home() {
+type PokemonResult = {
+  name: string;
+  url: string;
+  details?: any
+};
+
+type PokemonList = {
+  count: number;
+  next?: string;
+  previous?: string;
+  results: PokemonResult[];
+};
+
+// export function PokemonCardDisplay({ pokemonList }) {
+//   return (
+//     <ul>
+//       {pokemonList.map((pokemon) => (
+//         <li>{pokemon.name}</li>
+//       ))}
+//     </ul>
+//   )
+// }
+
+export const getStaticProps: GetStaticProps =
+  (async (context) => {
+    const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=1010");
+    const pokemonList = await res.json();
+
+    const pokemonListPromises = pokemonList.results.map(async (pokemon: PokemonResult) => {
+      const resPokemonInfo = await fetch(
+        `${pokemon.url}`
+      );
+      return await resPokemonInfo.json();
+      
+    });
+
+    const pokemonData = await Promise.all(pokemonListPromises);
+
+    pokemonList.results.forEach((pokemonInfo: { details: any; }, index: number) => {
+      pokemonInfo.details = pokemonData[index];
+    });
+
+    return { props: { pokemonList } };
+  }) satisfies GetStaticProps<{
+    pokemonList: PokemonList;
+  }>;
+
+// function PokemonCardDisplay({ pokemonList }: InferGetStaticPropsType<typeof getStaticProps>) {
+//   return (
+// <ul>
+//   {pokemonList.results.map((pokemon: PokemonResult) => (
+//     <li>{pokemon.name}</li>
+//   ))}
+// </ul>
+//   )
+// }
+
+// interface PokemonListInfoProps {
+//   pokemonList: PokemonList;
+// }
+
+// const PokemonListInfo: React.FC<PokemonListInfoProps> = ({ pokemonList }) => {
+//   return (
+//     <div>
+//       {pokemonList.count}
+//     </div>
+//   );
+// };
+
+export default function Home({
+  pokemonList,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   return (
@@ -122,7 +194,7 @@ export default function Home() {
                     {/* map types */}
                     <div className="mx-2 my-2 flex justify-between">
                       <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
+                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl border px-3 py-1 text-white">
                         NORMAL
                       </div>
                     </div>
@@ -245,10 +317,17 @@ export default function Home() {
                 className="w-1/5 rounded-3xl bg-red-500 p-3 text-white"
               >
                 Go!
-              </button>     
+              </button>
             </div>
-            <div className="w-full bg-red-900">
-                {/* <i class="fas fa-spinner results__loading--spinner"></i> */}
+            <div className="flex w-full">
+              <ul>
+                {console.log(pokemonList)}
+                {pokemonList.results.map((pokemon: PokemonResult) => (
+                  <li>{pokemon.name} - {pokemon.details.types[0].type.name}</li>
+                ))}
+                {/* {pokemonList.results} */}
+              </ul>
+              {/* <i class="fas fa-spinner results__loading--spinner"></i> */}
             </div>
           </div>
         </div>
