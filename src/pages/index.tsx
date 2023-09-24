@@ -4,6 +4,8 @@ import Image from "next/image";
 import type { InferGetStaticPropsType, GetStaticProps } from "next";
 
 import { api } from "~/utils/api";
+import { useState } from "react";
+import PokemonCard from "~/components/PokemonCard";
 
 type PokemonResult = {
   name: string;
@@ -17,16 +19,6 @@ type PokemonList = {
   previous?: string;
   results: PokemonResult[];
 };
-
-// export function PokemonCardDisplay({ pokemonList }) {
-//   return (
-//     <ul>
-//       {pokemonList.map((pokemon) => (
-//         <li>{pokemon.name}</li>
-//       ))}
-//     </ul>
-//   )
-// }
 
 export const getStaticProps: GetStaticProps =
   (async (context) => {
@@ -52,32 +44,14 @@ export const getStaticProps: GetStaticProps =
     pokemonList: PokemonList;
   }>;
 
-// function PokemonCardDisplay({ pokemonList }: InferGetStaticPropsType<typeof getStaticProps>) {
-//   return (
-// <ul>
-//   {pokemonList.results.map((pokemon: PokemonResult) => (
-//     <li>{pokemon.name}</li>
-//   ))}
-// </ul>
-//   )
-// }
-
-// interface PokemonListInfoProps {
-//   pokemonList: PokemonList;
-// }
-
-// const PokemonListInfo: React.FC<PokemonListInfoProps> = ({ pokemonList }) => {
-//   return (
-//     <div>
-//       {pokemonList.count}
-//     </div>
-//   );
-// };
-
 export default function Home({
   pokemonList,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const [results, setResults] = useState(pokemonList.results);
+  
+
+
 
   return (
     <>
@@ -319,14 +293,19 @@ export default function Home({
                 Go!
               </button>
             </div>
-            <div className="flex w-full">
-              <ul>
-                {console.log(pokemonList)}
-                {pokemonList.results.map((pokemon: PokemonResult) => (
+            <div className="flex w-full justify-center flex-wrap">
+              {/* <ul> */}
+                {/* {pokemonList.results.map((pokemon: PokemonResult) => (
                   <li>{pokemon.name} - {pokemon.details.types[0].type.name}</li>
+                ))} */}
+                {/* {results.map((pokemon: PokemonResult) => (
+                  <li>{pokemon.name} - {pokemon.details.types[0].type.name}</li>
+                ))} */}
+                {results.map((pokemon: PokemonResult) => (
+                  <PokemonCard {...pokemon} key={pokemon.details.id} />
                 ))}
-                {/* {pokemonList.results} */}
-              </ul>
+                {/* {results} */}
+              {/* </ul> */}
               {/* <i class="fas fa-spinner results__loading--spinner"></i> */}
             </div>
           </div>
