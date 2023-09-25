@@ -6,11 +6,13 @@ import type { InferGetStaticPropsType, GetStaticProps } from "next";
 import { api } from "~/utils/api";
 import { useState } from "react";
 import PokemonCard from "~/components/PokemonCard";
+import PokemonType from "~/components/PokemonType";
+import Nav from "~/components/Nav";
 
 type PokemonResult = {
   name: string;
   url: string;
-  details?: any
+  details?: any;
 };
 
 type PokemonList = {
@@ -20,38 +22,58 @@ type PokemonList = {
   results: PokemonResult[];
 };
 
-export const getStaticProps: GetStaticProps =
-  (async (context) => {
-    const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=1010");
-    const pokemonList = await res.json();
+const pokemonTypeNames = [
+  "normal",
+  "fire",
+  "water",
+  "grass",
+  "electric",
+  "flying",
+  "bug",
+  "poison",
+  "fighting",
+  "ground",
+  "rock",
+  "ghost",
+  "psychic",
+  "ice",
+  "dragon",
+  "dark",
+  "steel",
+  "fairy",
+];
 
-    const pokemonListPromises = pokemonList.results.map(async (pokemon: PokemonResult) => {
-      const resPokemonInfo = await fetch(
-        `${pokemon.url}`
-      );
+const pokeLimit = 1010;
+
+export const getStaticProps: GetStaticProps = (async (context) => {
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${pokeLimit}`);
+  const pokemonList = await res.json();
+
+  const pokemonListPromises = pokemonList.results.map(
+    async (pokemon: PokemonResult) => {
+      const resPokemonInfo = await fetch(`${pokemon.url}`);
       return await resPokemonInfo.json();
-      
-    });
+    },
+  );
 
-    const pokemonData = await Promise.all(pokemonListPromises);
+  const pokemonData = await Promise.all(pokemonListPromises);
 
-    pokemonList.results.forEach((pokemonInfo: { details: any; }, index: number) => {
+  pokemonList.results.forEach(
+    (pokemonInfo: { details: any }, index: number) => {
       pokemonInfo.details = pokemonData[index];
-    });
+    },
+  );
 
-    return { props: { pokemonList } };
-  }) satisfies GetStaticProps<{
-    pokemonList: PokemonList;
-  }>;
+  return { props: { pokemonList } };
+}) satisfies GetStaticProps<{
+  pokemonList: PokemonList;
+}>;
 
 export default function Home({
   pokemonList,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const [results, setResults] = useState(pokemonList.results);
-  
-
-
 
   return (
     <>
@@ -61,42 +83,7 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section id="landing" className="bg-red-500">
-        <nav className="mx-auto flex h-24 w-full max-w-6xl flex-row justify-between px-5 py-2">
-          <div className="flex items-center">
-            <figure className="flex h-14 w-14 items-center justify-center">
-              <Image
-                id="poke-logo"
-                src="./assets/noun-pokeball-594337.svg"
-                width={48}
-                height={48}
-                alt=""
-              />
-            </figure>
-            <h1 className="text-2xl font-semibold text-neutral-900">PokeTB</h1>
-          </div>
-          <ul className="flex items-center justify-between">
-            <li className="mx-3">
-              <a href="#" className="text-lg font-medium text-neutral-900">
-                Home
-              </a>
-            </li>
-            <li className="mx-3">
-              <a href="#" className="text-lg font-medium text-neutral-900">
-                Dark/Light Icon
-              </a>
-            </li>
-            <li className="mx-3">
-              <a href="#" className="text-lg font-medium text-neutral-900">
-                Log In
-              </a>
-            </li>
-            <li className="mx-3">
-              <a href="#" className="text-lg font-medium text-neutral-900">
-                Sign Up
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <Nav />
         <header id="search">
           <div className="mx-3 flex flex-col items-center py-6">
             <h1 className="mb-6 text-center text-7xl font-bold text-neutral-900">
@@ -160,120 +147,17 @@ export default function Home({
         <div className="w-full py-12">
           <div className="mx-auto my-0 w-full max-w-6xl">
             <div className="flex flex-col items-center">
-              <div className="flex w-full flex-col items-center bg-amber-100">
+              <div className="flex w-full flex-col items-center bg-amber-100 mx-4">
                 <h1 className="text-4xl font-bold ">Advanced Search</h1>
                 <div id="filter">
                   <h3 className="text-center text-xl">Filter by Type</h3>
                   <div className="my-2 flex w-full max-w-5xl flex-wrap items-center justify-center">
-                    {/* map types */}
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl border px-3 py-1 text-white">
-                        NORMAL
+                    {pokemonTypeNames.map((type) => (
+                      <div className="mx-2 my-2 flex justify-between">
+                        <input className="mx-3" type="checkbox" name="type-filter" value={type} />
+                        <PokemonType type={type} />
                       </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
-                    <div className="mx-2 my-2 flex justify-between">
-                      <input type="checkbox" name="type-filter" id="" />
-                      <div className="bg-normal border-normal-border mx-1.5 rounded-3xl px-3 py-1 text-white">
-                        NORMAL
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -293,19 +177,10 @@ export default function Home({
                 Go!
               </button>
             </div>
-            <div className="flex w-full justify-center flex-wrap">
-              {/* <ul> */}
-                {/* {pokemonList.results.map((pokemon: PokemonResult) => (
-                  <li>{pokemon.name} - {pokemon.details.types[0].type.name}</li>
-                ))} */}
-                {/* {results.map((pokemon: PokemonResult) => (
-                  <li>{pokemon.name} - {pokemon.details.types[0].type.name}</li>
-                ))} */}
-                {results.map((pokemon: PokemonResult) => (
-                  <PokemonCard {...pokemon} key={pokemon.details.id} />
-                ))}
-                {/* {results} */}
-              {/* </ul> */}
+            <div className="flex w-full flex-wrap justify-center">
+              {results.map((pokemon: PokemonResult) => (
+                <PokemonCard {...pokemon} key={pokemon.details.id} />
+              ))}
               {/* <i class="fas fa-spinner results__loading--spinner"></i> */}
             </div>
           </div>

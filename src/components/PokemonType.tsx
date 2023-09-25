@@ -22,7 +22,7 @@ const PokemonType = (props: {type: string}) => {
         flying: 'bg-flying border-flying-border',
     }
   return (
-    <div className={`${typeColorSelect[props.type as keyof typeof typeColorSelect]} rounded-3xl border px-3 py-1 text-white`}>
+    <div className={`${typeColorSelect[props.type as keyof typeof typeColorSelect]} w-24 flex justify-center rounded-3xl border px-3 py-1 text-white`}>
       {props.type.toUpperCase()}
     </div>
   );
