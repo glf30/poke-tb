@@ -162,7 +162,7 @@ export default function PokemonInfoPage({
                   <div className="m-4 mt-3 text-3xl font-bold text-neutral-900">
                     MOVES
                   </div>
-                  <ul className="overflow-y-scroll max-h-44  rounded-lg text-left border border-neutral-400 scrollbar-thin scrollbar-thumb-rounded-md scrollbar-track-rounded-md scrollbar-thumb-neutral-300 scrollbar-track-">
+                  <ul className="overflow-y-scroll max-h-44  rounded-lg text-left border border-neutral-400 scrollbar-thin scrollbar-thumb-rounded-md scrollbar-track-rounded-md scrollbar-thumb-neutral-300">
                     {pokemonInfo.moves.map((move: any) => (
                       <li className="px-2 w-full ">{wordFormatter(move.move.name)}</li>
                     ))}

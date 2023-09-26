@@ -111,12 +111,74 @@ const TeamProfilePage = () => {
       <div className="w-full py-4">
         <div className="mx-auto my-0 w-full max-w-6xl">
           <div className="flex flex-col items-center">
-            <div className="flex flex-col md:flex-row space-x-20 w-full">
+            <div className="flex w-full flex-col space-x-20 md:flex-row">
               <div className="flex w-1/2 flex-col items-center p-4">
-                <div className="m-4 mb-1 w-full text-3xl font-bold text-neutral-900">
+                <div className="m-4 text-3xl font-bold text-neutral-900">
                   MY TEAMS
                 </div>
                 {/* Team Cards */}
+                <div className="flex h-6 mb-2 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
+                  CREATE NEW TEAM
+                </div>
+
+                <div className="w-full flex flex-col items-center overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-rounded-md scrollbar-track-rounded-md scrollbar-thumb-neutral-300 max-h-[700px] p-1">
+                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
+                    <h2 className="text-2xl font-bold">Team 1</h2>
+                    {/* replace for trash can */}
+                    <span className="flex cursor-pointer text-sm text-red-500">
+                      DELETE
+                    </span>
+                  </div>
+                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
+                    <h2 className="text-2xl font-bold">Team 1</h2>
+                    {/* replace for trash can */}
+                    <span className="flex cursor-pointer text-sm text-red-500">
+                      DELETE
+                    </span>
+                  </div>
+                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
+                    <h2 className="text-2xl font-bold">Team 1</h2>
+                    {/* replace for trash can */}
+                    <span className="flex cursor-pointer text-sm text-red-500">
+                      DELETE
+                    </span>
+                  </div>
+                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
+                    <h2 className="text-2xl font-bold">Team 1</h2>
+                    {/* replace for trash can */}
+                    <span className="flex cursor-pointer text-sm text-red-500">
+                      DELETE
+                    </span>
+                  </div>
+                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
+                    <h2 className="text-2xl font-bold">Team 1</h2>
+                    {/* replace for trash can */}
+                    <span className="flex cursor-pointer text-sm text-red-500">
+                      DELETE
+                    </span>
+                  </div>
+                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
+                    <h2 className="text-2xl font-bold">Team 1</h2>
+                    {/* replace for trash can */}
+                    <span className="flex cursor-pointer text-sm text-red-500">
+                      DELETE
+                    </span>
+                  </div>
+                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
+                    <h2 className="text-2xl font-bold">Team 1</h2>
+                    {/* replace for trash can */}
+                    <span className="flex cursor-pointer text-sm text-red-500">
+                      DELETE
+                    </span>
+                  </div>
+                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
+                    <h2 className="text-2xl font-bold">Team 1</h2>
+                    {/* replace for trash can */}
+                    <span className="flex cursor-pointer text-sm text-red-500">
+                      DELETE
+                    </span>
+                  </div>
+                </div>
               </div>
 
               <div className="flex w-1/2 flex-col items-center p-4">
@@ -127,60 +189,78 @@ const TeamProfilePage = () => {
                   GO!
                 </div>
                 {/* Team Preview */}
-                <div className="flex flex-col flex-wrap w-full md:flex-row items-center justify-center">
-                  <figure className="flex h-52 w-52 items-center justify-center rounded-lg border border-neutral-400 m-4">
+                <div className="flex w-full flex-col flex-wrap items-center justify-center md:flex-row">
+                  <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
                     <Image
                       className=""
                       src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
                       alt=""
-                      width={186}
-                      height={186}
+                      width={166}
+                      height={166}
                     />
+                    <span className="text-center text-xl font-medium text-neutral-900">
+                      KLEAVOR
+                    </span>
                   </figure>
-                  <figure className="flex h-52 w-52 items-center justify-center rounded-lg border border-neutral-400 m-4">
+                  <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
                     <Image
                       className=""
                       src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
                       alt=""
-                      width={186}
-                      height={186}
+                      width={166}
+                      height={166}
                     />
+                    <span className="text-center text-xl font-medium text-neutral-900">
+                      KLEAVOR
+                    </span>
                   </figure>
-                  <figure className="flex h-52 w-52 items-center justify-center rounded-lg border border-neutral-400 m-4">
+                  <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
                     <Image
                       className=""
                       src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
                       alt=""
-                      width={186}
-                      height={186}
+                      width={166}
+                      height={166}
                     />
+                    <span className="text-center text-xl font-medium text-neutral-900">
+                      KLEAVOR
+                    </span>
                   </figure>
-                  <figure className="flex h-52 w-52 items-center justify-center rounded-lg border border-neutral-400 m-4">
+                  <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
                     <Image
                       className=""
                       src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
                       alt=""
-                      width={186}
-                      height={186}
+                      width={166}
+                      height={166}
                     />
+                    <span className="text-center text-xl font-medium text-neutral-900">
+                      KLEAVOR
+                    </span>
                   </figure>
-                  <figure className="flex h-52 w-52 items-center justify-center rounded-lg border border-neutral-400 m-4">
+                  <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
                     <Image
                       className=""
                       src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
                       alt=""
-                      width={186}
-                      height={186}
+                      width={166}
+                      height={166}
                     />
+                    <span className="text-center text-xl font-medium text-neutral-900">
+                      KLEAVOR
+                    </span>
                   </figure>
-                  <figure className="flex h-52 w-52 items-center justify-center rounded-lg border border-neutral-400 m-4">
+                  <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
                     <Image
                       className=""
                       src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
                       alt=""
-                      width={186}
-                      height={186}
+                      width={166}
+                      height={166}
                     />
+                    <span className="text-center text-xl font-medium text-neutral-900">
+                      KLEAVOR
+                    </span>
                   </figure>
                 </div>
               </div>
