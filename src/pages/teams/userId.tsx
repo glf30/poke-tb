@@ -1,6 +1,8 @@
 import React from "react";
 import Nav from "~/components/Nav";
 import Image from "next/image";
+import TeamCard from "~/components/TeamCard";
+import TeamPreviewView from "~/components/TeamPreviewView";
 
 interface Pokemon {
   name: string;
@@ -117,67 +119,14 @@ const TeamProfilePage = () => {
                   MY TEAMS
                 </div>
                 {/* Team Cards */}
-                <div className="flex h-6 mb-2 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
+                <div className="mb-2 flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
                   CREATE NEW TEAM
                 </div>
 
-                <div className="w-full flex flex-col items-center overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-rounded-md scrollbar-track-rounded-md scrollbar-thumb-neutral-300 max-h-[700px] p-1">
-                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
-                    <h2 className="text-2xl font-bold">Team 1</h2>
-                    {/* replace for trash can */}
-                    <span className="flex cursor-pointer text-sm text-red-500">
-                      DELETE
-                    </span>
-                  </div>
-                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
-                    <h2 className="text-2xl font-bold">Team 1</h2>
-                    {/* replace for trash can */}
-                    <span className="flex cursor-pointer text-sm text-red-500">
-                      DELETE
-                    </span>
-                  </div>
-                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
-                    <h2 className="text-2xl font-bold">Team 1</h2>
-                    {/* replace for trash can */}
-                    <span className="flex cursor-pointer text-sm text-red-500">
-                      DELETE
-                    </span>
-                  </div>
-                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
-                    <h2 className="text-2xl font-bold">Team 1</h2>
-                    {/* replace for trash can */}
-                    <span className="flex cursor-pointer text-sm text-red-500">
-                      DELETE
-                    </span>
-                  </div>
-                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
-                    <h2 className="text-2xl font-bold">Team 1</h2>
-                    {/* replace for trash can */}
-                    <span className="flex cursor-pointer text-sm text-red-500">
-                      DELETE
-                    </span>
-                  </div>
-                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
-                    <h2 className="text-2xl font-bold">Team 1</h2>
-                    {/* replace for trash can */}
-                    <span className="flex cursor-pointer text-sm text-red-500">
-                      DELETE
-                    </span>
-                  </div>
-                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
-                    <h2 className="text-2xl font-bold">Team 1</h2>
-                    {/* replace for trash can */}
-                    <span className="flex cursor-pointer text-sm text-red-500">
-                      DELETE
-                    </span>
-                  </div>
-                  <div className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4">
-                    <h2 className="text-2xl font-bold">Team 1</h2>
-                    {/* replace for trash can */}
-                    <span className="flex cursor-pointer text-sm text-red-500">
-                      DELETE
-                    </span>
-                  </div>
+                <div className="scrollbar-thin scrollbar-thumb-rounded-md scrollbar-track-rounded-md scrollbar-thumb-neutral-300 flex max-h-[700px] w-full flex-col items-center overflow-x-hidden overflow-y-scroll p-1">
+                  {exampleUser.teams.map((team: Team) => (
+                    <TeamCard name={team.teamName} />
+                  ))}
                 </div>
               </div>
 
@@ -190,7 +139,7 @@ const TeamProfilePage = () => {
                 </div>
                 {/* Team Preview */}
                 <div className="flex w-full flex-col flex-wrap items-center justify-center md:flex-row">
-                  <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
+                  {/* <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
                     <Image
                       className=""
                       src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
@@ -201,67 +150,10 @@ const TeamProfilePage = () => {
                     <span className="text-center text-xl font-medium text-neutral-900">
                       KLEAVOR
                     </span>
-                  </figure>
-                  <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
-                    <Image
-                      className=""
-                      src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
-                      alt=""
-                      width={166}
-                      height={166}
-                    />
-                    <span className="text-center text-xl font-medium text-neutral-900">
-                      KLEAVOR
-                    </span>
-                  </figure>
-                  <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
-                    <Image
-                      className=""
-                      src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
-                      alt=""
-                      width={166}
-                      height={166}
-                    />
-                    <span className="text-center text-xl font-medium text-neutral-900">
-                      KLEAVOR
-                    </span>
-                  </figure>
-                  <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
-                    <Image
-                      className=""
-                      src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
-                      alt=""
-                      width={166}
-                      height={166}
-                    />
-                    <span className="text-center text-xl font-medium text-neutral-900">
-                      KLEAVOR
-                    </span>
-                  </figure>
-                  <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
-                    <Image
-                      className=""
-                      src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
-                      alt=""
-                      width={166}
-                      height={166}
-                    />
-                    <span className="text-center text-xl font-medium text-neutral-900">
-                      KLEAVOR
-                    </span>
-                  </figure>
-                  <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
-                    <Image
-                      className=""
-                      src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
-                      alt=""
-                      width={166}
-                      height={166}
-                    />
-                    <span className="text-center text-xl font-medium text-neutral-900">
-                      KLEAVOR
-                    </span>
-                  </figure>
+                  </figure> */}
+                  {exampleUser.teams[0]?.pokemon.map((pokemon: Pokemon) => (
+                    <TeamPreviewView name={pokemon.name} imgUrl={pokemon.imgUrl} />
+                  ))}
                 </div>
               </div>
             </div>
