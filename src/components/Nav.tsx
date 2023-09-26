@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Nav = () => {
   return (
@@ -19,24 +20,24 @@ const Nav = () => {
           </div>
           <ul className="flex items-center justify-between">
             <li className="mx-3">
-              <a href="#" className="text-lg font-medium text-neutral-900">
+              <Link href="/" className="text-lg font-medium text-neutral-900">
                 Home
-              </a>
+              </Link>
             </li>
             <li className="mx-3">
-              <a href="#" className="text-lg font-medium text-neutral-900">
+              <Link href="#" className="text-lg font-medium text-neutral-900">
                 Dark/Light Icon
-              </a>
+              </Link>
             </li>
             <li className="mx-3">
-              <a href="#" className="text-lg font-medium text-neutral-900">
+              <Link href="#" className="text-lg font-medium text-neutral-900">
                 Log In
-              </a>
+              </Link>
             </li>
             <li className="mx-3">
-              <a href="#" className="text-lg font-medium text-neutral-900">
+              <Link href="#" className="text-lg font-medium text-neutral-900">
                 Sign Up
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

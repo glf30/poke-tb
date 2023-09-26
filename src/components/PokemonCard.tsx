@@ -1,6 +1,7 @@
 import React from "react";
 import PokemonType from "./PokemonType";
 import Image from "next/image";
+import Link from "next/link";
 
 type PokemonResult = {
   name: string;
@@ -10,7 +11,7 @@ type PokemonResult = {
 
 const PokemonCard = (props: PokemonResult) => {
   return (
-    <div className="w-full max-w-xs mx-6 my-4 flex flex-col items-center rounded-lg border border-neutral-400 p-6">
+    <Link href={`/pokemon/${props.name}`} className="w-full max-w-xs mx-6 my-4 flex flex-col items-center rounded-lg border border-neutral-400 p-6">
       <figure className="flex h-52 w-52 items-center justify-center rounded-lg border border-neutral-400">
         <Image
           className=""
@@ -34,7 +35,7 @@ const PokemonCard = (props: PokemonResult) => {
           <PokemonType type={props.details.types[1].type.name} />
         )}
       </div>
-    </div>
+    </Link>
   );
 };
 
