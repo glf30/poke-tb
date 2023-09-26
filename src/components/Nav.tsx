@@ -3,6 +3,7 @@ import Image from 'next/image'
 
 const Nav = () => {
   return (
+    
     <nav className="mx-auto flex h-24 w-full max-w-6xl flex-row justify-between px-5 py-2">
           <div className="flex items-center">
             <figure className="flex h-14 w-14 items-center justify-center">
