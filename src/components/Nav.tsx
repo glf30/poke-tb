@@ -10,7 +10,7 @@ const Nav = () => {
             <figure className="flex h-14 w-14 items-center justify-center">
               <Image
                 id="poke-logo"
-                src="../assets/noun-pokeball-594337.svg"
+                src="/assets/noun-pokeball-594337.svg"
                 width={48}
                 height={48}
                 alt=""

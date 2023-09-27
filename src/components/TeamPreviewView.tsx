@@ -12,7 +12,7 @@ const TeamPreviewView = (props: {imgUrl: string, name: string}) => {
       height={166}
     />
     <span className="text-center text-xl font-medium text-neutral-900">
-      {props.name}
+      {props.name.toUpperCase()}
     </span>
   </figure>
   )

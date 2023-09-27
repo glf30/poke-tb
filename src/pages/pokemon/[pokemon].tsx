@@ -61,7 +61,6 @@ export default function PokemonInfoPage({
 
   useEffect(() => {
     pokemonInfo.abilities.forEach((ability: { ability: { name: string } }) => {
-      console.log(ability.ability.name);
       if (!abilities.includes(ability.ability.name)) {
         setAbilities([...abilities, ability.ability.name]);
       }

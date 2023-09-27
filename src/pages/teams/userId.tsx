@@ -139,18 +139,6 @@ const TeamProfilePage = () => {
                 </div>
                 {/* Team Preview */}
                 <div className="flex w-full flex-col flex-wrap items-center justify-center md:flex-row">
-                  {/* <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
-                    <Image
-                      className=""
-                      src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/900.png"
-                      alt=""
-                      width={166}
-                      height={166}
-                    />
-                    <span className="text-center text-xl font-medium text-neutral-900">
-                      KLEAVOR
-                    </span>
-                  </figure> */}
                   {exampleUser.teams[0]?.pokemon.map((pokemon: Pokemon) => (
                     <TeamPreviewView name={pokemon.name} imgUrl={pokemon.imgUrl} />
                   ))}
