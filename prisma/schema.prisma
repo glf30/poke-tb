@@ -18,3 +18,45 @@ model Example {
 
     @@index([name])
 }
+
+model User {
+    userId String @id @default(cuid())
+    username String
+    teams Team[]
+}
+
+model Team {
+    teamId String @id @default(cuid())
+    teamName String
+    createdAt DateTime @default(now())
+    user User @relation(fields: [userId], references: [userId])
+    userId String
+    pokemon Pokemon[]
+}
+
+model Pokemon {
+  pokemonId  String @id @default(cuid())
+  name   String
+  level   Int
+  ability String
+  item   String
+  nature   String
+  move1 String
+  move2 String
+  move3 String
+  move4 String
+  hp_EV Int
+  atk_EV Int
+  def_EV Int
+  spatk_EV Int
+  spdef_EV Int
+  spe_EV Int
+  hp_IV Int
+  atk_IV Int
+  def_IV Int
+  spatk_IV Int
+  spdef_IV Int
+  spe_IV Int
+  team Team @relation(fields: [teamId], references: [teamId])
+  teamId String
+}
