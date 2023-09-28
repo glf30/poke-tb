@@ -342,10 +342,8 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 export const getStaticProps: GetStaticProps = (async (context) => {
-  // console.log(context.params)
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/iron-hands`);
   const pokemonInfo = await res.json();
-  console.log(pokemonInfo);
   return { props: { pokemonInfo } };
 }) satisfies GetStaticProps<{
   pokemonInfo: any;
