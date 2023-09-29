@@ -62,10 +62,6 @@ const TeamProfilePage = () => {
     }
   }, [pokemon.data]);
 
-  // useEffect(() => {
-  //   console.log(previewArray);
-  // }, [previewArray]);
-
   return (
     <>
       <section id="landing" className="bg-red-500">

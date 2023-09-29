@@ -337,9 +337,8 @@ export default function Home() {
           <div className="mx-auto my-0 w-full max-w-6xl">
             <div className="flex flex-col items-center">
               <div className="mx-4 flex w-full flex-col items-center bg-amber-100">
-                <h1 className="text-4xl font-bold ">Advanced Search</h1>
+                <h1 className="text-4xl font-bold m-2">Filter By Type</h1>
                 <div id="filter">
-                  <h3 className="text-center text-xl">Filter by Type</h3>
                   <div className="my-2 flex w-full max-w-5xl flex-wrap items-center justify-center">
                     {pokemonTypeNames.map((type) => (
                       <div className="mx-2 my-2 flex justify-between">
