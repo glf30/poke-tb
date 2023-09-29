@@ -7,6 +7,8 @@ import PokemonCard from "~/components/PokemonCard";
 import PokemonType from "~/components/PokemonType";
 import Nav from "~/components/Nav";
 
+import { useSignUp, useUser } from "@clerk/nextjs";
+
 type PokemonResult = {
   name: string;
   url: string;
@@ -44,8 +46,28 @@ const pokemonTypeNames = [
 const pokeLimit = 1010;
 
 export default function Home() {
+  const { user } = useUser();
+  const [isInDB, setisInDB] = useState(false);
+  const signedInUser = api.user.getById.useQuery(user?.id as string, {
+    enabled: !!user,
+  });
+  const addUser = api.user.userCreate.useMutation();
+
+  useEffect(() => {
+    if (user !== undefined) {
+      if (signedInUser.data === undefined && isInDB === false) {
+        addUser.mutate({
+          username:
+            (user?.username as string) ??
+            `${user?.emailAddresses[0]?.emailAddress}`,
+          userId: user?.id as string,
+        });
+        setisInDB(true);
+      }
+    }
+  }, [user]);
+
   const [pokemonList, setPokemonList] = useState<PokemonResult[]>([]);
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const [results, setResults] = useState<PokemonResult[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [nextScroll, setNextScroll] = useState(30);
@@ -262,7 +284,8 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {}, [results]);
+  // useEffect(() => {}, [results]);
+
   return (
     <>
       <Head>
@@ -280,7 +303,7 @@ export default function Home() {
             <div className="flex w-full max-w-xl items-center rounded-full border-2 border-white bg-white p-2">
               <input
                 type="text"
-                className="w-full pr-8 indent-5 text-2xl outline-none text-center"
+                className="w-full pr-8 text-center indent-5 text-2xl outline-none"
                 placeholder="Enter a name to begin searching"
                 onChange={handleSearchInput}
               />
@@ -337,7 +360,7 @@ export default function Home() {
           <div className="mx-auto my-0 w-full max-w-6xl">
             <div className="flex flex-col items-center">
               <div className="mx-4 flex w-full flex-col items-center bg-amber-100">
-                <h1 className="text-4xl font-bold m-2">Filter By Type</h1>
+                <h1 className="m-2 text-4xl font-bold">Filter By Type</h1>
                 <div id="filter">
                   <div className="my-2 flex w-full max-w-5xl flex-wrap items-center justify-center">
                     {pokemonTypeNames.map((type) => (
@@ -386,7 +409,6 @@ export default function Home() {
                 ) : (
                   <div>No results</div>
                 )}
-
               </div>
             </InfiniteScroll>
             {/* <i class="fas fa-spinner results__loading--spinner"></i> */}
