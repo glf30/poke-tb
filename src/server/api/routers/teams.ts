@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
@@ -9,19 +10,30 @@ export const teamsRouter = createTRPCRouter({
   getUserTeamById: publicProcedure
     .input(z.string())
     .query(({ ctx, input }) => {
-      return ctx.db.team.findFirst(
+      const team = ctx.db.team.findFirst(
         {
             where: {
                 teamId: input
             }
         }
       )
+
+      
+      if (!team) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Team not found",
+        });
+      }
+
+      return team;
+
     }),
 
   getUserTeamsById: publicProcedure
     .input(z.string())
     .query(({ ctx, input }) => {
-      return ctx.db.team.findMany(
+      const teams = ctx.db.team.findMany(
         {
             where: {
                 userId: input
@@ -31,5 +43,24 @@ export const teamsRouter = createTRPCRouter({
             }
         }
       )
+
+      if (!teams) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Teams not found",
+        });
+      }
+
+      return teams;
+    }),
+
+    teamCreate: publicProcedure
+    .input(z.object({ teamName: z.string(), userId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.db.team.create({
+        data: {
+          ...input,
+        },
+      });
     }),
 });
