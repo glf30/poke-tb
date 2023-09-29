@@ -27,8 +27,6 @@ const TeamProfilePage = () => {
   );
 
   const handleSelectTeam = (teamId: string) => {
-    console.log("UMMMMMMMMMMMMMMMMMMMMMM");
-    console.log(previewArray);
     setSelectedTeam(teams.data?.find((team) => team.teamId === teamId));
   };
 
@@ -64,16 +62,16 @@ const TeamProfilePage = () => {
     }
   }, [pokemon.data]);
 
-  useEffect(() => {
-    console.log(previewArray);
-  }, [previewArray]);
+  // useEffect(() => {
+  //   console.log(previewArray);
+  // }, [previewArray]);
 
   return (
     <>
       <section id="landing" className="bg-red-500">
         <Nav />
       </section>
-      <div className="w-full py-4">
+      <div className="w-full py-2">
         <div className="mx-auto my-0 w-full max-w-6xl">
           <div className="flex flex-col items-center">
             {teams.data?.length === 0 ? (

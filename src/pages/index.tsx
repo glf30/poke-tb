@@ -258,7 +258,6 @@ export default function Home() {
         break;
 
       default:
-        // setResults(pokemonList.results);
         break;
     }
   };

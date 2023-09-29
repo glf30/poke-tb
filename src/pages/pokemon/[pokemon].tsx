@@ -60,12 +60,14 @@ export default function PokemonInfoPage({
   };
 
   useEffect(() => {
+    const abilitiesTemp: string[] = [];
     pokemonInfo.abilities.forEach((ability: { ability: { name: string } }) => {
-      if (!abilities.includes(ability.ability.name)) {
-        setAbilities([...abilities, ability.ability.name]);
+      if (!abilitiesTemp.includes(ability.ability.name)) {
+        abilitiesTemp.push(ability.ability.name);
       }
     });
-  }, [abilities]);
+    setAbilities([...abilitiesTemp]);
+  }, []);
 
   return (
     <>
@@ -73,7 +75,7 @@ export default function PokemonInfoPage({
         <Nav />
       </section>
       {/* <div>{pokemonInfo.name}</div> */}
-      <div className="w-full py-4">
+      <div className="w-full py-2">
         <div className="mx-auto my-0 w-full max-w-6xl">
           <div className="flex flex-col items-center">
             <div className="mb-8 text-center text-7xl font-bold text-neutral-900">
@@ -157,13 +159,15 @@ export default function PokemonInfoPage({
                     );
                   })}
                 </div>
-                <div className="flex flex-col items-center w-full">
+                <div className="flex w-full flex-col items-center">
                   <div className="m-4 mt-3 text-3xl font-bold text-neutral-900">
                     MOVES
                   </div>
-                  <ul className="overflow-y-scroll max-h-44  rounded-lg text-left border border-neutral-400 scrollbar-thin scrollbar-thumb-rounded-md scrollbar-track-rounded-md scrollbar-thumb-neutral-300">
+                  <ul className="max-h-44 overflow-y-scroll  rounded-lg border border-neutral-400 text-left scrollbar-thin scrollbar-thumb-neutral-300 scrollbar-track-rounded-md scrollbar-thumb-rounded-md">
                     {pokemonInfo.moves.map((move: any) => (
-                      <li className="px-2 w-full ">{wordFormatter(move.move.name)}</li>
+                      <li className="w-full px-2 ">
+                        {wordFormatter(move.move.name)}
+                      </li>
                     ))}
                   </ul>
                 </div>
