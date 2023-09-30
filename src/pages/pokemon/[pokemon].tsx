@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Nav from "~/components/Nav";
@@ -8,6 +8,15 @@ import type {
   GetStaticPaths,
 } from "next";
 import PokemonType from "~/components/PokemonType";
+import { Menu, Transition } from "@headlessui/react";
+import { api } from "~/utils/api";
+import { useUser } from "@clerk/nextjs";
+
+type PokemonDefaultData = {
+  name: string,
+  ability: string,
+  move: string,
+}
 
 // const PokemonInfoPage = () => {
 //   const router = useRouter();
@@ -74,6 +83,7 @@ export default function PokemonInfoPage({
       <section id="landing" className="bg-red-500">
         <Nav />
       </section>
+
       {/* <div>{pokemonInfo.name}</div> */}
       <div className="w-full py-2">
         <div className="mx-auto my-0 w-full max-w-6xl">
@@ -109,9 +119,14 @@ export default function PokemonInfoPage({
                 </div>
               </figure>
               <div className="flex w-1/2 flex-col items-center">
-                <div className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
+                {/* <div className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
                   ADD TO TEAM
-                </div>
+                </div> */}
+                <TeamMenu pokemon={{
+                  name: pokemonInfo.name,
+                  ability: pokemonInfo.abilities[0].ability.name,
+                  move: pokemonInfo.moves[0].move.name
+                }}/>
                 {/* Stats */}
                 <div className="m-4 mb-1 text-3xl font-bold text-neutral-900">
                   BASE STATS
@@ -177,5 +192,97 @@ export default function PokemonInfoPage({
         </div>
       </div>
     </>
+  );
+}
+
+export function TeamMenu(props: {pokemon: PokemonDefaultData}) {
+  
+  const [selectedTeamId, setSelectedTeamId] = useState("");
+
+  const { user } = useUser();
+  const teams = api.teams.getUserTeamsById.useQuery(user?.id as string,);
+
+  const teamPokemon = api.pokemon.getTeamPokemonById.useQuery(
+    selectedTeamId
+  );
+
+  const addPokemon = api.pokemon.pokemonCreate.useMutation();
+
+  const handleSelect = (teamId: string) => {
+    setSelectedTeamId(teamId)
+    
+  }
+
+  //when data for individual team is successfully retrieved
+  useEffect(() => {
+    // teamPokemon.refetch();
+    if(teamPokemon.data !== undefined && selectedTeamId !== ""){
+      if(teamPokemon.data?.length <= 5){
+        addPokemon.mutate({
+          name: props.pokemon.name,
+          teamId: selectedTeamId,
+          ability: props.pokemon.ability,
+          move1: props.pokemon.move,
+          move2: props.pokemon.move,
+          move3: props.pokemon.move,
+          move4: props.pokemon.move,
+        });
+      } else {
+        //6 - already full team
+
+      }
+    }
+
+  },[teamPokemon.data])
+
+  //might need to figure out scrolling
+  return (
+    <div className="">
+      <Menu as="div" className="relative inline-block text-center">
+        <div>
+          <Menu.Button className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
+            ADD TO TEAM
+          </Menu.Button>
+        </div>
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          <Menu.Items className="absolute mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <div className="px-1 py-1">
+              {teams.data?.map((team) => (
+                <Menu.Item>
+                  {({ active }) => (
+                    <button onClick={() => handleSelect(team.teamId)}
+                      className={`${
+                        active ? "bg-red-500 text-white" : "text-gray-900"
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                    >
+                      {team.teamName}
+                    </button>
+                  )}
+                </Menu.Item>
+              ))}
+              {/* <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={`${
+                      active ? 'bg-red-500 text-white' : 'text-gray-900'
+                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                  >
+                    Edit
+                  </button>
+                )}
+              </Menu.Item> */}
+            </div>
+          </Menu.Items>
+        </Transition>
+      </Menu>
+    </div>
   );
 }

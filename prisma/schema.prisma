@@ -37,26 +37,26 @@ model Team {
 model Pokemon {
   pokemonId  String @id @default(cuid())
   name   String
-  level   Int
+  level   Int   @default(100)
   ability String
-  item   String
-  nature   String
+  item   String   @default("Life Orb")
+  nature   String @default("Adamant")
   move1 String
   move2 String
   move3 String
   move4 String
-  hp_EV Int
-  atk_EV Int
-  def_EV Int
-  spatk_EV Int
-  spdef_EV Int
-  spe_EV Int
-  hp_IV Int
-  atk_IV Int
-  def_IV Int
-  spatk_IV Int
-  spdef_IV Int
-  spe_IV Int
+  hp_EV Int @default(0)
+  atk_EV Int @default(0)
+  def_EV Int @default(0)
+  spatk_EV Int @default(0)
+  spdef_EV Int @default(0)
+  spe_EV Int @default(0)
+  hp_IV Int @default(31)
+  atk_IV Int @default(31)
+  def_IV Int @default(31)
+  spatk_IV Int @default(31)
+  spdef_IV Int @default(31)
+  spe_IV Int @default(31)
   team Team @relation(fields: [teamId], references: [teamId])
   teamId String
 }
