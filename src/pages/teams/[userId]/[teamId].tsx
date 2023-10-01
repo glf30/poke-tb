@@ -6,6 +6,32 @@ import PokemonType from "~/components/PokemonType";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import { Pokemon } from "@prisma/client";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+type Inputs = {
+  pokemonId: string,
+  // name:   z.string(),
+  level: number,
+  ability: string,
+  item: string,
+  nature: string,
+  move1: string,
+  move2: string,
+  move3: string,
+  move4: string,
+  hp_EV: number,
+  atk_EV: number,
+  def_EV: number,
+  spatk_EV: number,
+  spdef_EV: number,
+  spe_EV: number,
+  hp_IV: number,
+  atk_IV: number,
+  def_IV: number,
+  spatk_IV: number,
+  spdef_IV: number,
+  spe_IV: number,
+};
 
 const heldItems: string[] = [
   "Ability Capsule",
@@ -251,6 +277,22 @@ export default function TeamEditPage() {
 
   const [abilities, setAbilities] = useState<string[]>([]);
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  //submit to DB
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    // addTeam.mutate({
+    //   teamName: data.teamname,
+    //   userId: props.userId,
+    // });
+    // teams.refetch();
+  };
+
   const wordFormatter = (input: string) => {
     return input
       .split("-")
@@ -295,6 +337,7 @@ export default function TeamEditPage() {
   }, [pokemon.data]);
 
   useEffect(() => {
+    reset();
     if (pokemonInfoArray.length > 0 && currentPokemon !== undefined) {
       const abilitiesTemp: string[] = [];
       pokemonInfoArray
@@ -316,7 +359,7 @@ export default function TeamEditPage() {
       <div className="w-full py-2">
         <div className="mx-auto my-0 w-full max-w-6xl">
           {pokemonInfoArray.length > 0 && currentPokemon !== undefined ? (
-            <div className="flex flex-col items-center">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center">
               <div className="mb-2 text-center text-5xl font-bold text-neutral-900">
                 {team.data?.teamName}
               </div>
@@ -378,14 +421,15 @@ export default function TeamEditPage() {
                         type="number"
                         min={1}
                         max={100}
-                        defaultValue={currentPokemon.level ?? 100}
+                        defaultValue={currentPokemon.level}
+                        {...register("level")}
                       />
                     </div>
                     <div>
                       <label htmlFor="" className="font-bold">
                         Ability:
                       </label>
-                      <select id="abilities" className="p-2">
+                      <select id="abilities" className="p-2" {...register("ability")}>
                         {abilities.map((ability: string) => (
                           <option
                             className="text-xl"
@@ -404,6 +448,7 @@ export default function TeamEditPage() {
                         id="heldItems"
                         className="p-2"
                         defaultValue={currentPokemon.item ?? "Life Orb"}
+                        {...register("item")}
                       >
                         {heldItems.map((item: string) => (
                           <option className="text-xl" value={`${item}`}>
@@ -420,6 +465,7 @@ export default function TeamEditPage() {
                         id="natures"
                         className="p-2"
                         defaultValue={currentPokemon.nature ?? "Adamant"}
+                        {...register("nature")}
                       >
                         {natures.map((nature: string) => (
                           <option className="text-xl" value={`${nature}`}>
@@ -445,6 +491,7 @@ export default function TeamEditPage() {
                             (pokemon) => currentPokemon.name === pokemon.name,
                           ).moves[0].move.name
                         }
+                        {...register("move1")}
                       >
                         {pokemonInfoArray
                           .find(
@@ -465,7 +512,7 @@ export default function TeamEditPage() {
                         Move 2:
                       </label>
                       <select
-                        id="move1"
+                        id="move2"
                         className="p-2"
                         defaultValue={
                           currentPokemon.move2 ??
@@ -473,6 +520,7 @@ export default function TeamEditPage() {
                             (pokemon) => currentPokemon.name === pokemon.name,
                           ).moves[0].move.name
                         }
+                        {...register("move2")}
                       >
                         {pokemonInfoArray
                           .find(
@@ -493,7 +541,7 @@ export default function TeamEditPage() {
                         Move 3:
                       </label>
                       <select
-                        id="move1"
+                        id="move3"
                         className="p-2"
                         defaultValue={
                           currentPokemon.move3 ??
@@ -501,6 +549,7 @@ export default function TeamEditPage() {
                             (pokemon) => currentPokemon.name === pokemon.name,
                           ).moves[0].move.name
                         }
+                        {...register("move3")}
                       >
                         {pokemonInfoArray
                           .find(
@@ -526,7 +575,7 @@ export default function TeamEditPage() {
                         Move 4:
                       </label>
                       <select
-                        id="move1"
+                        id="move4"
                         className="p-2"
                         defaultValue={
                           currentPokemon.move4 ??
@@ -534,6 +583,7 @@ export default function TeamEditPage() {
                             (pokemon) => currentPokemon.name === pokemon.name,
                           ).moves[0].move.name
                         }
+                        {...register("move4")}
                       >
                         {pokemonInfoArray
                           .find(
@@ -579,7 +629,8 @@ export default function TeamEditPage() {
                         type="number"
                         min={0}
                         max={252}
-                        defaultValue={currentPokemon.hp_EV ?? 0}
+                        defaultValue={currentPokemon.hp_EV}
+                        {...register("hp_EV")}
                       />
                     </td>
                     <td>
@@ -588,7 +639,8 @@ export default function TeamEditPage() {
                         type="number"
                         min={0}
                         max={31}
-                        defaultValue={currentPokemon.hp_IV ?? 31}
+                        defaultValue={currentPokemon.hp_IV}
+                        {...register("hp_IV")}
                       />
                     </td>
                   </tr>
@@ -607,7 +659,8 @@ export default function TeamEditPage() {
                         type="number"
                         min={0}
                         max={252}
-                        defaultValue={currentPokemon.atk_EV ?? 0}
+                        defaultValue={currentPokemon.atk_EV}
+                        {...register("atk_EV")}
                       />
                     </td>
                     <td>
@@ -616,7 +669,8 @@ export default function TeamEditPage() {
                         type="number"
                         min={0}
                         max={31}
-                        defaultValue={currentPokemon.atk_IV ?? 31}
+                        defaultValue={currentPokemon.atk_IV}
+                        {...register("atk_IV")}
                       />
                     </td>
                   </tr>
@@ -635,7 +689,8 @@ export default function TeamEditPage() {
                         type="number"
                         min={0}
                         max={252}
-                        defaultValue={currentPokemon.def_EV ?? 0}
+                        defaultValue={currentPokemon.def_EV}
+                        {...register("def_EV")}
                       />
                     </td>
                     <td>
@@ -644,7 +699,8 @@ export default function TeamEditPage() {
                         type="number"
                         min={0}
                         max={31}
-                        defaultValue={currentPokemon.def_IV ?? 31}
+                        defaultValue={currentPokemon.def_IV}
+                        {...register("def_IV")}
                       />
                     </td>
                   </tr>
@@ -663,7 +719,8 @@ export default function TeamEditPage() {
                         type="number"
                         min={0}
                         max={252}
-                        defaultValue={currentPokemon.spatk_EV ?? 0}
+                        defaultValue={currentPokemon.spatk_EV}
+                        {...register("spatk_EV")}
                       />
                     </td>
                     <td>
@@ -672,7 +729,8 @@ export default function TeamEditPage() {
                         type="number"
                         min={0}
                         max={31}
-                        defaultValue={currentPokemon.spatk_IV ?? 31}
+                        defaultValue={currentPokemon.spatk_IV}
+                        {...register("spatk_IV")}
                       />
                     </td>
                   </tr>
@@ -691,7 +749,8 @@ export default function TeamEditPage() {
                         type="number"
                         min={0}
                         max={252}
-                        defaultValue={currentPokemon.spdef_EV ?? 0}
+                        defaultValue={currentPokemon.spdef_EV}
+                        {...register("spdef_EV")}
                       />
                     </td>
                     <td>
@@ -700,7 +759,8 @@ export default function TeamEditPage() {
                         type="number"
                         min={0}
                         max={31}
-                        defaultValue={currentPokemon.spdef_IV ?? 31}
+                        defaultValue={currentPokemon.spdef_IV}
+                        {...register("spdef_IV")}
                       />
                     </td>
                   </tr>
@@ -719,7 +779,8 @@ export default function TeamEditPage() {
                         type="number"
                         min={0}
                         max={252}
-                        defaultValue={currentPokemon.spe_EV ?? 0}
+                        defaultValue={currentPokemon.spe_EV}
+                        {...register("spe_EV")}
                       />
                     </td>
                     <td>
@@ -728,7 +789,8 @@ export default function TeamEditPage() {
                         type="number"
                         min={0}
                         max={31}
-                        defaultValue={currentPokemon.spe_IV ?? 31}
+                        defaultValue={currentPokemon.spe_IV}
+                        {...register("spe_IV")}
                       />
                     </td>
                   </tr>
@@ -753,7 +815,7 @@ export default function TeamEditPage() {
                   </div>
                 ))}
               </div>
-            </div>
+            </form>
           ) : (
             <>
               <div className="m-4 text-3xl font-bold text-neutral-900">

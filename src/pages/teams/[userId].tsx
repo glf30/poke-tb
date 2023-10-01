@@ -179,7 +179,6 @@ export function MyModal(props: { userId: string }) {
     register,
     handleSubmit,
     resetField,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
 
