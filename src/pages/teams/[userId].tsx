@@ -8,6 +8,7 @@ import { Pokemon, Team } from "@prisma/client";
 import { useUser } from "@clerk/nextjs";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import Link from "next/link";
 
 type PokemonPreview = {
   name: string;
@@ -137,9 +138,9 @@ const TeamProfilePage = () => {
                         ADD POKEMON
                       </div>
                     ) : (
-                      <div className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
+                      <Link href={`/teams/${user.id}/${selectedTeam?.teamId}`} className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
                         GO!
-                      </div>
+                      </Link>
                     )}
                     {/* Team Preview */}
                     <div className="flex w-full flex-col flex-wrap items-center justify-center md:flex-row">

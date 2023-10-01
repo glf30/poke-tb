@@ -11,6 +11,8 @@ import PokemonType from "~/components/PokemonType";
 import { Menu, Transition } from "@headlessui/react";
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type PokemonDefaultData = {
   name: string,
@@ -188,6 +190,7 @@ export default function PokemonInfoPage({
                 </div>
               </div>
             </div>
+            <ToastContainer />
           </div>
         </div>
       </div>
@@ -210,12 +213,18 @@ export function TeamMenu(props: {pokemon: PokemonDefaultData}) {
 
   const handleSelect = (teamId: string) => {
     setSelectedTeamId(teamId)
-    
   }
+
+  const successAddToTeam = () => toast.success(`${props.pokemon.name.toUpperCase()[0]}${props.pokemon.name.slice(1)} has been successfully added to your team!`, {
+    position: toast.POSITION.TOP_CENTER
+  });
+
+  const failAddToTeam = () => toast.error(`Could not add ${props.pokemon.name.toUpperCase()[0]}${props.pokemon.name.slice(1)}. This team is full`, {
+    position: toast.POSITION.TOP_CENTER
+  });
 
   //when data for individual team is successfully retrieved
   useEffect(() => {
-    // teamPokemon.refetch();
     if(teamPokemon.data !== undefined && selectedTeamId !== ""){
       if(teamPokemon.data?.length <= 5){
         addPokemon.mutate({
@@ -227,10 +236,13 @@ export function TeamMenu(props: {pokemon: PokemonDefaultData}) {
           move3: props.pokemon.move,
           move4: props.pokemon.move,
         });
+        
+        successAddToTeam();
       } else {
         //6 - already full team
-
+        failAddToTeam();
       }
+      setSelectedTeamId(""); //deselect a team
     }
 
   },[teamPokemon.data])
