@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useUser } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 const Nav = () => {
   const { user } = useUser();
@@ -21,12 +21,18 @@ const Nav = () => {
       </div>
       <ul className="flex items-center justify-between">
         <li className="mx-3">
-          <Link href="/" className="text-lg font-medium text-neutral-900 hover:text-white duration-200">
+          <Link
+            href="/"
+            className="text-lg font-medium text-neutral-900 duration-200 hover:text-white"
+          >
             Home
           </Link>
         </li>
         <li className="mx-3">
-          <Link href="#" className="text-lg font-medium text-neutral-900 hover:text-white duration-200">
+          <Link
+            href="#"
+            className="text-lg font-medium text-neutral-900 duration-200 hover:text-white"
+          >
             Dark/Light Icon
           </Link>
         </li>
@@ -35,26 +41,41 @@ const Nav = () => {
             <li className="mx-3">
               <Link
                 href="sign-in"
-                className="text-lg font-medium text-neutral-900 hover:text-white duration-200"
+                className="text-lg font-medium text-neutral-900 duration-200 hover:text-white"
               >
                 Sign In
               </Link>
             </li>
-            <li className="mx-3 rounded-xl border border-white p-2 bg-white group cursor-pointer">
-              <Link href="sign-up" className="text-lg font-medium text-neutral-900 group-hover:text-red-500 duration-200">
+            <li className="group mx-3 cursor-pointer rounded-xl border border-white bg-white p-2">
+              <Link
+                href="sign-up"
+                className="text-lg font-medium text-neutral-900 duration-200 group-hover:text-red-500"
+              >
                 Sign Up
               </Link>
             </li>
           </>
         ) : (
           <>
-            <li className="mx-3 rounded-xl border border-white p-2 bg-white group cursor-pointer">
+            <li className="mx-3">
+              <Link
+                href={`/teams/${user.id}`}
+                className="text-lg font-medium text-neutral-900 duration-200 hover:text-white"
+              >
+                My Teams
+              </Link>
+            </li>
+            {/* <li className="mx-3 rounded-xl border border-white p-2 bg-white group cursor-pointer">
               <Link
                 href={`/teams/${user.id}`}
                 className="text-lg font-medium text-neutral-900 group-hover:text-red-500 duration-200"
               >
-                {`Hi, ${user.firstName}`}
+                My Teams
               </Link>
+              
+            </li> */}
+            <li className="mx-3">
+              <UserButton afterSignOutUrl="/" />
             </li>
           </>
         )}

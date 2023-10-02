@@ -1,13 +1,11 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 
 export const teamsRouter = createTRPCRouter({
-  // Upgrade to private when auth is added
-  
 
-  getUserTeamById: publicProcedure
+  getUserTeamById: privateProcedure
     .input(z.string())
     .query(({ ctx, input }) => {
       const team = ctx.db.team.findFirst(
@@ -30,7 +28,7 @@ export const teamsRouter = createTRPCRouter({
 
     }),
 
-  getUserTeamsById: publicProcedure
+  getUserTeamsById: privateProcedure
     .input(z.string())
     .query(({ ctx, input }) => {
       const teams = ctx.db.team.findMany(
@@ -54,7 +52,7 @@ export const teamsRouter = createTRPCRouter({
       return teams;
     }),
 
-    teamCreate: publicProcedure
+    teamCreate: privateProcedure
     .input(z.object({ teamName: z.string(), userId: z.string() }))
     .mutation(({ ctx, input }) => {
       return ctx.db.team.create({
@@ -64,7 +62,7 @@ export const teamsRouter = createTRPCRouter({
       });
     }),
 
-    deleteTeam: publicProcedure
+    deleteTeam: privateProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       const team = await ctx.db.team.delete({

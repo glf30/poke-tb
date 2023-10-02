@@ -10,6 +10,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 
 type Inputs = {
   pokemonId: string;
@@ -269,6 +270,8 @@ export default function TeamEditPage() {
   const [pokemonInfoArray, setPokemonInfoArray] = useState<any[]>([]);
 
   const { query } = useRouter();
+  const { user } = useUser();
+  
   const pokemon = api.pokemon.getTeamPokemonById.useQuery(
     query.teamId as string,
   );
@@ -483,6 +486,9 @@ export default function TeamEditPage() {
     }
     console.log("ZAPDOS");
   }, [currentPokemon]);
+
+  if (!user) return null;
+  if (user.id !== query.userId) return null;
 
   return (
     <>

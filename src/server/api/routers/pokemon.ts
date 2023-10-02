@@ -1,11 +1,11 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 
 export const pokemonRouter = createTRPCRouter({
-  // Upgrade to private when auth is added
-  getTeamPokemonById: publicProcedure
+
+  getTeamPokemonById: privateProcedure
     .input(z.string())
     .query(({ ctx, input }) => {
       const pokemon = ctx.db.pokemon.findMany({
@@ -23,7 +23,7 @@ export const pokemonRouter = createTRPCRouter({
       return pokemon;
     }),
 
-    getPokemonById: publicProcedure
+    getPokemonById: privateProcedure
     .input(z.string())
     .query(({ ctx, input }) => {
       const pokemon = ctx.db.pokemon.findFirst({
@@ -41,7 +41,7 @@ export const pokemonRouter = createTRPCRouter({
       return pokemon;
     }),
 
-  pokemonCreate: publicProcedure
+  pokemonCreate: privateProcedure
     .input(
       z.object({
         teamId: z.string(),
@@ -61,7 +61,7 @@ export const pokemonRouter = createTRPCRouter({
       });
     }),
 
-  updatePokemon: publicProcedure
+  updatePokemon: privateProcedure
     .input(
       z.object({
         pokemonId: z.string(),
@@ -100,7 +100,7 @@ export const pokemonRouter = createTRPCRouter({
       return updatePokemon;
     }),
 
-    deletePokemon: publicProcedure
+    deletePokemon: privateProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       const deletedPokemon = await ctx.db.pokemon.delete({
@@ -112,7 +112,7 @@ export const pokemonRouter = createTRPCRouter({
       return deletedPokemon;
     }),
 
-    deleteAllTeamPokemon: publicProcedure
+    deleteAllTeamPokemon: privateProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       const deletedPokemon = await ctx.db.pokemon.deleteMany({
