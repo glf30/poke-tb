@@ -138,7 +138,7 @@ const TeamProfilePage = () => {
                         ADD POKEMON
                       </Link>
                     ) : (
-                      <Link href={`/teams/${user.id}/${selectedTeam?.teamId}`} className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
+                      <Link href={`/teams/${user.id}/${selectedTeam?.teamId}`} className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white hover:opacity-80 duration-200">
                         GO!
                       </Link>
                     )}

@@ -966,13 +966,13 @@ export default function TeamEditPage() {
               <div className="flex flex-col items-center md:m-2 md:mt-3 md:flex-row md:space-x-4">
                 <button
                   type="submit"
-                  className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-green-600 p-4 text-center font-bold text-white"
+                  className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-green-600 p-4 text-center font-bold text-white hover:opacity-80 duration-200"
                 >
                   SAVE
                 </button>
                 <button
                   type="button"
-                  className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-600 p-4 text-center font-bold text-white"
+                  className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-600 p-4 text-center font-bold text-white hover:opacity-80 duration-200"
                   onClick={handleDelete}
                 >
                   DELETE
@@ -999,7 +999,7 @@ export default function TeamEditPage() {
               </div>
               <Link
                 href={"/"}
-                className="mb-2 flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white"
+                className="mb-2 flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white hover:opacity-80 duration-200" 
               >
                 ADD POKEMON
               </Link>
