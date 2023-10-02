@@ -134,9 +134,9 @@ const TeamProfilePage = () => {
                       {selectedTeam ? `${selectedTeam.teamName}` : "PREVIEW"}
                     </div>
                     {previewArray.length === 0 ? (
-                      <div className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
+                      <Link href="/" className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
                         ADD POKEMON
-                      </div>
+                      </Link>
                     ) : (
                       <Link href={`/teams/${user.id}/${selectedTeam?.teamId}`} className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
                         GO!
@@ -187,8 +187,10 @@ export function MyModal(props: { userId: string }) {
     addTeam.mutate({
       teamName: data.teamname,
       userId: props.userId,
-    });
-    teams.refetch();
+    },
+    {onSuccess: () => teams.refetch()}
+    );
+    
   };
 
   function closeModal() {

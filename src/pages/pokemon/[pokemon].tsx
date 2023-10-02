@@ -20,22 +20,6 @@ type PokemonDefaultData = {
   move: string,
 }
 
-// const PokemonInfoPage = () => {
-//   const router = useRouter();
-//   const { pokemon } = router.query;
-
-//   return (
-//     <>
-//       <Nav />
-//       <div>{pokemon}</div>
-//     </>
-//   );
-// };
-
-// export default PokemonInfoPage;
-// const router = useRouter();
-// const { pokemon } = router.query;
-
 export const getStaticPaths = (async () => {
   return {
     paths: [],
@@ -126,8 +110,8 @@ export default function PokemonInfoPage({
                 </div> */}
                 <TeamMenu pokemon={{
                   name: pokemonInfo.name,
-                  ability: pokemonInfo.abilities[0].ability.name,
-                  move: pokemonInfo.moves[0].move.name
+                  ability: wordFormatter(pokemonInfo.abilities[0].ability.name),
+                  move: wordFormatter(pokemonInfo.moves[0].move.name)
                 }}/>
                 {/* Stats */}
                 <div className="m-4 mb-1 text-3xl font-bold text-neutral-900">
@@ -219,7 +203,11 @@ export function TeamMenu(props: {pokemon: PokemonDefaultData}) {
     position: toast.POSITION.TOP_CENTER
   });
 
-  const failAddToTeam = () => toast.error(`Could not add ${props.pokemon.name.toUpperCase()[0]}${props.pokemon.name.slice(1)}. This team is full`, {
+  const failAddToTeam = () => toast.error(`Could not add ${props.pokemon.name.toUpperCase()[0]}${props.pokemon.name.slice(1)}. Server error`, {
+    position: toast.POSITION.TOP_CENTER
+  });
+
+  const failAddToTeamSize = () => toast.error(`Could not add ${props.pokemon.name.toUpperCase()[0]}${props.pokemon.name.slice(1)}. This team is full`, {
     position: toast.POSITION.TOP_CENTER
   });
 
@@ -235,12 +223,12 @@ export function TeamMenu(props: {pokemon: PokemonDefaultData}) {
           move2: props.pokemon.move,
           move3: props.pokemon.move,
           move4: props.pokemon.move,
-        });
+        }, {onSuccess: () => successAddToTeam(), onError: () => failAddToTeam()});
         
-        successAddToTeam();
+        
       } else {
         //6 - already full team
-        failAddToTeam();
+        failAddToTeamSize();
       }
       setSelectedTeamId(""); //deselect a team
     }

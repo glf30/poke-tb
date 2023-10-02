@@ -7,30 +7,31 @@ import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import { Pokemon } from "@prisma/client";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Inputs = {
-  pokemonId: string,
-  // name:   z.string(),
-  level: number,
-  ability: string,
-  item: string,
-  nature: string,
-  move1: string,
-  move2: string,
-  move3: string,
-  move4: string,
-  hp_EV: number,
-  atk_EV: number,
-  def_EV: number,
-  spatk_EV: number,
-  spdef_EV: number,
-  spe_EV: number,
-  hp_IV: number,
-  atk_IV: number,
-  def_IV: number,
-  spatk_IV: number,
-  spdef_IV: number,
-  spe_IV: number,
+  pokemonId: string;
+  level: number;
+  ability: string;
+  item: string;
+  nature: string;
+  move1: string;
+  move2: string;
+  move3: string;
+  move4: string;
+  hp_EV: number;
+  atk_EV: number;
+  def_EV: number;
+  spatk_EV: number;
+  spdef_EV: number;
+  spe_EV: number;
+  hp_IV: number;
+  atk_IV: number;
+  def_IV: number;
+  spatk_IV: number;
+  spdef_IV: number;
+  spe_IV: number;
 };
 
 const heldItems: string[] = [
@@ -44,7 +45,6 @@ const heldItems: string[] = [
   "Assault Vest",
   "Babiri Berry",
   "Beast Ball",
-  "Beast Boost",
   "Beast Heart",
   "Berry Juice",
   "Big Mushroom",
@@ -273,6 +273,8 @@ export default function TeamEditPage() {
   );
   const team = api.teams.getUserTeamById.useQuery(query.teamId as string);
 
+  const updatePokemon = api.pokemon.updatePokemon.useMutation();
+
   const [currentPokemon, setCurrentPokemon] = useState<Pokemon>();
 
   const [abilities, setAbilities] = useState<string[]>([]);
@@ -281,16 +283,72 @@ export default function TeamEditPage() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>();
 
+  const successUpdateToast = () =>
+    toast.success(
+      `${currentPokemon?.name.toUpperCase()[0]}${currentPokemon?.name.slice(
+        1,
+      )} has been successfully updated!`,
+      {
+        position: toast.POSITION.TOP_CENTER,
+      },
+    );
+
+  const failUpdateToast = () =>
+    toast.error(`Error updating pokemon, please try again later`, {
+      position: toast.POSITION.TOP_CENTER,
+    });
+
   //submit to DB
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    // addTeam.mutate({
-    //   teamName: data.teamname,
-    //   userId: props.userId,
-    // });
-    // teams.refetch();
+    console.log("DATA");
+    console.log(data);
+    if (currentPokemon !== undefined) {
+      updatePokemon.mutate(
+        {
+          level: Number(data.level),
+          ability: data.ability,
+          item: data.item,
+          nature: data.nature,
+          move1: data.move1,
+          move2: data.move2,
+          move3: data.move3,
+          move4: data.move4,
+          hp_EV: Number(data.hp_EV),
+          atk_EV: Number(data.atk_EV),
+          def_EV: Number(data.def_EV),
+          spatk_EV: Number(data.spatk_EV),
+          spdef_EV: Number(data.spdef_EV),
+          spe_EV: Number(data.spe_EV),
+          hp_IV: Number(data.hp_IV),
+          atk_IV: Number(data.atk_IV),
+          def_IV: Number(data.def_IV),
+          spatk_IV: Number(data.spatk_IV),
+          spdef_IV: Number(data.spdef_IV),
+          spe_IV: Number(data.spe_IV),
+          pokemonId: currentPokemon?.pokemonId,
+        },
+        {
+          onSuccess: () => pokemon.refetch(),
+          onError: () => failUpdateToast(),
+        },
+      );
+      // console.log(currentPokemon)
+      successUpdateToast();
+      // resetField("ability");
+      // resetField("item");
+      // resetField("nature");
+      // resetField("move1");
+      // resetField("move2");
+      // resetField("move3");
+      // resetField("move4");
+      console.log("AGAIN");
+      console.log(data);
+      setCurrentPokemon(currentPokemon);
+    }
   };
 
   const wordFormatter = (input: string) => {
@@ -305,13 +363,12 @@ export default function TeamEditPage() {
   };
 
   const handleSetCurrentPokemon = (event: any) => {
-    console.log(event)
-    setCurrentPokemon(pokemon.data?.find((pokemonData) => pokemonData.pokemonId === event));
+    setCurrentPokemon(
+      pokemon.data?.find((pokemonData) => pokemonData.pokemonId === event),
+    );
+    reset();
   };
 
-  // useEffect(() => {
-  //   console.log(teams.data);
-  // }, [teams]);
   useEffect(() => {
     const getTeamPokemon = async (pokemon: Pokemon[]) => {
       const promises = pokemon.map(async (pokemonData) => {
@@ -322,7 +379,7 @@ export default function TeamEditPage() {
 
         return {
           ...data,
-          pokemonId: pokemonData.pokemonId
+          pokemonId: pokemonData.pokemonId,
         };
       });
 
@@ -332,34 +389,78 @@ export default function TeamEditPage() {
 
     if (pokemon.data && !pokemon.isLoading) {
       getTeamPokemon(pokemon.data);
-      setCurrentPokemon(pokemon.data[0]);
+      if (currentPokemon === undefined) {
+        setCurrentPokemon(pokemon.data[0]);
+      }
     }
   }, [pokemon.data]);
 
+  // useEffect(() => {
+  //   if (pokemonInfoArray.length > 0 && currentPokemon !== undefined) {
+  //     const abilitiesTemp: string[] = [];
+  //     pokemonInfoArray
+  //       .find((pokemon) => currentPokemon.name === pokemon.name)
+  //       .abilities.forEach((ability: { ability: { name: string } }) => {
+  //         if (!abilitiesTemp.includes(ability.ability.name)) {
+  //           abilitiesTemp.push(ability.ability.name);
+  //         }
+  //       });
+  //     setAbilities([...abilitiesTemp]);
+  //   }
+  //   console.log("ARTICUNO");
+  // }, [pokemonInfoArray, currentPokemon]);
+
+  // useEffect(() => {
+  //   if (currentPokemon !== undefined && abilities[0] !== undefined) {
+  //     if (currentPokemon.ability.toLowerCase() !== abilities[0].toLowerCase()) {
+  //       console.log("UMMMMMMMMM")
+  //       console.log(abilities[0])
+  //       console.log(currentPokemon.ability)
+  //       setValue("ability", currentPokemon?.ability);
+  //     }
+  //   }
+  // }, []);
+
   useEffect(() => {
-    reset();
-    if (pokemonInfoArray.length > 0 && currentPokemon !== undefined) {
-      const abilitiesTemp: string[] = [];
-      pokemonInfoArray
-        .find((pokemon) => currentPokemon.name === pokemon.name)
-        .abilities.forEach((ability: { ability: { name: string } }) => {
-          if (!abilitiesTemp.includes(ability.ability.name)) {
-            abilitiesTemp.push(ability.ability.name);
-          }
-        });
-      setAbilities([...abilitiesTemp]);
+    if (currentPokemon !== undefined) {
+      console.log("weird stfff");
+      // console.log(selectAbility);
+      // setSelectAbility(currentPokemon.ability);
+      // setSelectItem(currentPokemon.item);
+      // setSelectNature(currentPokemon.nature);
+      // setSelectMove1(currentPokemon.move1);
+      // setSelectMove2(currentPokemon.move2);
+      // setSelectMove3(currentPokemon.move3);
+      // setSelectMove4(currentPokemon.move4);
+      // console.log(selectAbility);
+      console.log(currentPokemon.ability);
+      reset({
+        ability: currentPokemon.ability,
+        item: currentPokemon.item,
+        nature: currentPokemon.nature,
+        move1: currentPokemon.move1,
+        move2: currentPokemon.move2,
+        move3: currentPokemon.move3,
+        move4: currentPokemon.move4,
+      });
+      setValue("ability", currentPokemon.ability);
     }
-  }, [pokemonInfoArray, currentPokemon]);
+    console.log("ZAPDOS");
+  }, [currentPokemon]);
 
   return (
     <>
       <section id="landing" className="bg-red-500">
         <Nav />
       </section>
+      <ToastContainer />
       <div className="w-full py-2">
         <div className="mx-auto my-0 w-full max-w-6xl">
           {pokemonInfoArray.length > 0 && currentPokemon !== undefined ? (
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col items-center"
+            >
               <div className="mb-2 text-center text-5xl font-bold text-neutral-900">
                 {team.data?.teamName}
               </div>
@@ -429,15 +530,35 @@ export default function TeamEditPage() {
                       <label htmlFor="" className="font-bold">
                         Ability:
                       </label>
-                      <select id="abilities" className="p-2" {...register("ability")}>
-                        {abilities.map((ability: string) => (
+                      <select
+                        id="abilities"
+                        className="p-2"
+                        {...register("ability")}
+                        // value={selectAbility}
+                        // onChange={(e) => setSelectAbility(e.target.value)}
+                        // defaultValue={currentPokemon.ability}
+                      >
+                        {/* no duplicates glitches the ability selection */}
+                        {/* {abilities.map((ability: string) => (
                           <option
                             className="text-xl"
                             value={`${wordFormatter(ability)}`}
                           >
                             {`${wordFormatter(ability)}`}
                           </option>
-                        ))}
+                        ))} */}
+                        {pokemonInfoArray
+                          .find(
+                            (pokemon) => currentPokemon.name === pokemon.name,
+                          )
+                          .abilities.map((ability: { ability: { name: string } }) => (
+                            <option
+                              className="text-xl"
+                              value={`${wordFormatter(ability.ability.name)}`}
+                            >
+                              {`${wordFormatter(ability.ability.name)}`}
+                            </option>
+                          ))}
                       </select>
                     </div>
                     <div>
@@ -447,8 +568,11 @@ export default function TeamEditPage() {
                       <select
                         id="heldItems"
                         className="p-2"
-                        defaultValue={currentPokemon.item ?? "Life Orb"}
+                        // defaultValue={currentPokemon.item}
+                        // value={currentPokemon.item}
                         {...register("item")}
+                        // value={selectItem}
+                        // onChange={(e) => setSelectItem(e.target.value)}
                       >
                         {heldItems.map((item: string) => (
                           <option className="text-xl" value={`${item}`}>
@@ -464,8 +588,10 @@ export default function TeamEditPage() {
                       <select
                         id="natures"
                         className="p-2"
-                        defaultValue={currentPokemon.nature ?? "Adamant"}
+                        // defaultValue={currentPokemon.nature}
                         {...register("nature")}
+                        // value={selectNature}
+                        // onChange={(e) => setSelectNature(e.target.value)}
                       >
                         {natures.map((nature: string) => (
                           <option className="text-xl" value={`${nature}`}>
@@ -485,13 +611,15 @@ export default function TeamEditPage() {
                       <select
                         id="move1"
                         className="p-2"
-                        defaultValue={
-                          currentPokemon.move1 ??
-                          pokemonInfoArray.find(
-                            (pokemon) => currentPokemon.name === pokemon.name,
-                          ).moves[0].move.name
-                        }
+                        // defaultValue={
+                        //   currentPokemon.move1 ??
+                        //   pokemonInfoArray.find(
+                        //     (pokemon) => currentPokemon.name === pokemon.name,
+                        //   ).moves[0].move.name
+                        // }
                         {...register("move1")}
+                        // value={selectMove1}
+                        // onChange={(e) => setSelectMove1(e.target.value)}
                       >
                         {pokemonInfoArray
                           .find(
@@ -514,13 +642,15 @@ export default function TeamEditPage() {
                       <select
                         id="move2"
                         className="p-2"
-                        defaultValue={
-                          currentPokemon.move2 ??
-                          pokemonInfoArray.find(
-                            (pokemon) => currentPokemon.name === pokemon.name,
-                          ).moves[0].move.name
-                        }
+                        // defaultValue={
+                        //   currentPokemon.move2 ??
+                        //   pokemonInfoArray.find(
+                        //     (pokemon) => currentPokemon.name === pokemon.name,
+                        //   ).moves[0].move.name
+                        // }
                         {...register("move2")}
+                        // value={selectMove2}
+                        // onChange={(e) => setSelectMove2(e.target.value)}
                       >
                         {pokemonInfoArray
                           .find(
@@ -543,13 +673,15 @@ export default function TeamEditPage() {
                       <select
                         id="move3"
                         className="p-2"
-                        defaultValue={
-                          currentPokemon.move3 ??
-                          pokemonInfoArray.find(
-                            (pokemon) => currentPokemon.name === pokemon.name,
-                          ).moves[0].move.name
-                        }
+                        // defaultValue={
+                        //   currentPokemon.move3 ??
+                        //   pokemonInfoArray.find(
+                        //     (pokemon) => currentPokemon.name === pokemon.name,
+                        //   ).moves[0].move.name
+                        // }
                         {...register("move3")}
+                        // value={selectMove3}
+                        // onChange={(e) => setSelectMove3(e.target.value)}
                       >
                         {pokemonInfoArray
                           .find(
@@ -563,11 +695,6 @@ export default function TeamEditPage() {
                               {`${wordFormatter(move.move.name)}`}
                             </option>
                           ))}
-                        {/* { <MoveSelect {...pokemonInfoArray
-                          .find(
-                            (pokemon) => currentPokemon.name === pokemon.name,
-                          )
-                          .moves}/>} */}
                       </select>
                     </div>
                     <div>
@@ -577,13 +704,15 @@ export default function TeamEditPage() {
                       <select
                         id="move4"
                         className="p-2"
-                        defaultValue={
-                          currentPokemon.move4 ??
-                          pokemonInfoArray.find(
-                            (pokemon) => currentPokemon.name === pokemon.name,
-                          ).moves[0].move.name
-                        }
+                        // defaultValue={
+                        //   currentPokemon.move4 ??
+                        //   pokemonInfoArray.find(
+                        //     (pokemon) => currentPokemon.name === pokemon.name,
+                        //   ).moves[0].move.name
+                        // }
                         {...register("move4")}
+                        // value={selectMove4}
+                        // onChange={(e) => setSelectMove4(e.target.value)}
                       >
                         {pokemonInfoArray
                           .find(
@@ -797,9 +926,12 @@ export default function TeamEditPage() {
                 </tbody>
               </table>
               <div className="flex flex-col items-center md:m-2 md:mt-3 md:flex-row md:space-x-4">
-                <div className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-green-600 p-4 text-center font-bold text-white">
+                <button
+                  type="submit"
+                  className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-green-600 p-4 text-center font-bold text-white"
+                >
                   SAVE
-                </div>
+                </button>
                 <div className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-600 p-4 text-center font-bold text-white">
                   DELETE
                 </div>
@@ -807,7 +939,9 @@ export default function TeamEditPage() {
               {/* Team */}
               <div className="flex flex-row">
                 {pokemonInfoArray.map((pokemon) => (
-                  <div onClick={() => handleSetCurrentPokemon(pokemon.pokemonId)}>
+                  <div
+                    onClick={() => handleSetCurrentPokemon(pokemon.pokemonId)}
+                  >
                     <TeamPreviewView
                       name={pokemon.name}
                       imgUrl={pokemon.sprites.front_default}
