@@ -99,4 +99,29 @@ export const pokemonRouter = createTRPCRouter({
       });
       return updatePokemon;
     }),
+
+    deletePokemon: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const deletedPokemon = await ctx.db.pokemon.delete({
+        where: {
+          pokemonId: input
+        },
+      });
+
+      return deletedPokemon;
+    }),
+
+    deleteAllTeamPokemon: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const deletedPokemon = await ctx.db.pokemon.deleteMany({
+        where: {
+          pokemonId: input
+        },
+      });
+
+      return deletedPokemon;
+    }),
+
 });

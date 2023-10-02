@@ -9,6 +9,7 @@ import { Pokemon } from "@prisma/client";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
 type Inputs = {
   pokemonId: string;
@@ -274,10 +275,11 @@ export default function TeamEditPage() {
   const team = api.teams.getUserTeamById.useQuery(query.teamId as string);
 
   const updatePokemon = api.pokemon.updatePokemon.useMutation();
+  const deletePokemon = api.pokemon.deletePokemon.useMutation();
 
   const [currentPokemon, setCurrentPokemon] = useState<Pokemon>();
 
-  const [abilities, setAbilities] = useState<string[]>([]);
+  // const [abilities, setAbilities] = useState<string[]>([]);
 
   const {
     register,
@@ -299,6 +301,21 @@ export default function TeamEditPage() {
 
   const failUpdateToast = () =>
     toast.error(`Error updating pokemon, please try again later`, {
+      position: toast.POSITION.TOP_CENTER,
+    });
+
+  const successDeleteToast = () =>
+    toast.success(
+      `${currentPokemon?.name.toUpperCase()[0]}${currentPokemon?.name.slice(
+        1,
+      )} has been successfully deleted`,
+      {
+        position: toast.POSITION.TOP_CENTER,
+      },
+    );
+
+  const failDeleteToast = () =>
+    toast.error(`Error deleting pokemon, please try again later`, {
       position: toast.POSITION.TOP_CENTER,
     });
 
@@ -348,6 +365,25 @@ export default function TeamEditPage() {
       console.log("AGAIN");
       console.log(data);
       setCurrentPokemon(currentPokemon);
+    }
+  };
+
+  const handleDelete = () => {
+    if (currentPokemon !== undefined && pokemon.data !== undefined) {
+      deletePokemon.mutate(currentPokemon.pokemonId, {
+        onSuccess: () => pokemon.refetch(),
+        onError: () => failDeleteToast(),
+      });
+      successDeleteToast();
+
+      if (pokemon.data.length > 0) {
+        if(currentPokemon.pokemonId === pokemon.data[0]?.pokemonId){
+          setCurrentPokemon(pokemon.data[1]);
+        } else {
+          setCurrentPokemon(pokemon.data[0]);
+        }
+        
+      }
     }
   };
 
@@ -551,14 +587,16 @@ export default function TeamEditPage() {
                           .find(
                             (pokemon) => currentPokemon.name === pokemon.name,
                           )
-                          .abilities.map((ability: { ability: { name: string } }) => (
-                            <option
-                              className="text-xl"
-                              value={`${wordFormatter(ability.ability.name)}`}
-                            >
-                              {`${wordFormatter(ability.ability.name)}`}
-                            </option>
-                          ))}
+                          .abilities.map(
+                            (ability: { ability: { name: string } }) => (
+                              <option
+                                className="text-xl"
+                                value={`${wordFormatter(ability.ability.name)}`}
+                              >
+                                {`${wordFormatter(ability.ability.name)}`}
+                              </option>
+                            ),
+                          )}
                       </select>
                     </div>
                     <div>
@@ -932,9 +970,13 @@ export default function TeamEditPage() {
                 >
                   SAVE
                 </button>
-                <div className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-600 p-4 text-center font-bold text-white">
+                <button
+                  type="button"
+                  className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-600 p-4 text-center font-bold text-white"
+                  onClick={handleDelete}
+                >
                   DELETE
-                </div>
+                </button>
               </div>
               {/* Team */}
               <div className="flex flex-row">
@@ -951,14 +993,17 @@ export default function TeamEditPage() {
               </div>
             </form>
           ) : (
-            <>
+            <div className="flex flex-col items-center">
               <div className="m-4 text-3xl font-bold text-neutral-900">
                 {team.data?.teamName}
               </div>
-              <div className="mb-2 flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
+              <Link
+                href={"/"}
+                className="mb-2 flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white"
+              >
                 ADD POKEMON
-              </div>
-            </>
+              </Link>
+            </div>
           )}
         </div>
       </div>
