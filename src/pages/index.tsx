@@ -7,7 +7,9 @@ import PokemonCard from "~/components/PokemonCard";
 import PokemonType from "~/components/PokemonType";
 import Nav from "~/components/Nav";
 
-import { useSignUp, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
+import CardSkeleton from "~/components/CardSkeleton";
+import FilterByType from "~/components/FilterByType";
 
 type PokemonResult = {
   name: string;
@@ -43,11 +45,18 @@ const pokemonTypeNames = [
   "fairy",
 ];
 
-const pokeLimit = 1010;
+const pokeLimit = 493;
 
 export default function Home() {
   const { user } = useUser();
+
   const [isInDB, setisInDB] = useState(false);
+  const [pokemonList, setPokemonList] = useState<PokemonResult[]>([]);
+  const [results, setResults] = useState<PokemonResult[]>([]);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [nextScroll, setNextScroll] = useState(30);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const signedInUser = api.user.getById.useQuery(user?.id as string, {
     enabled: !!user,
   });
@@ -67,19 +76,13 @@ export default function Home() {
     }
   }, [user]);
 
-  const [pokemonList, setPokemonList] = useState<PokemonResult[]>([]);
-  const [results, setResults] = useState<PokemonResult[]>([]);
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [nextScroll, setNextScroll] = useState(30);
-  const [searchQuery, setSearchQuery] = useState("");
+  
 
   const handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value.toLowerCase());
   };
 
-  useEffect(() => {
-    handleFilter();
-  }, [searchQuery]);
+ 
 
   const handleFilterSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checkboxValue = event.target.value;
@@ -145,9 +148,13 @@ export default function Home() {
     }
   };
 
+//  useEffect(() => {
+//     handleFilter();
+//   }, [searchQuery]);
+
   useEffect(() => {
     handleFilter();
-  }, [selectedTypes]);
+  }, [selectedTypes, searchQuery]);
 
   useEffect(() => {
     const getPokemonData = async () => {
@@ -195,8 +202,6 @@ export default function Home() {
   }, []);
 
   const handleGetNext = () => {
-    // if(nextScroll[1] !== undefined && nextScroll[0] !== undefined){
-    console.log(nextScroll);
     // less than 30 results left, make it go to the length of results and hasMore = false
     if (nextScroll + 30 > results.length) {
       setNextScroll(results.length);
@@ -284,7 +289,6 @@ export default function Home() {
     }
   };
 
-  // useEffect(() => {}, [results]);
 
   return (
     <>
@@ -307,59 +311,15 @@ export default function Home() {
                 placeholder="Enter a name to begin searching"
                 onChange={handleSearchInput}
               />
-              {/* <button type="submit" className="bg-white" onClick={handleSearch}>
-                <Image
-                  id="search-icon"
-                  className="mr-3"
-                  src="./assets/search_icon.svg"
-                  width={32}
-                  height={32}
-                  alt=""
-                />
-              </button> */}
             </div>
           </div>
         </header>
       </section>
-      {/* <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-          </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
-          </div>
-          <p className="text-2xl text-white">
-            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-          </p>
-        </div>
-      </main> */}
       <section id="results">
-        <div className="w-full py-12">
+        <div className="w-full py-6">
           <div className="mx-auto my-0 w-full max-w-6xl">
             <div className="flex flex-col items-center">
-              <div className="mx-4 flex w-full flex-col items-center bg-amber-100">
+              {/* <div className="mx-4 flex w-full flex-col items-center bg-amber-100">
                 <h1 className="m-2 text-4xl font-bold">Filter By Type</h1>
                 <div id="filter">
                   <div className="my-2 flex w-full max-w-5xl flex-wrap items-center justify-center">
@@ -378,40 +338,54 @@ export default function Home() {
                     ))}
                   </div>
                 </div>
+              </div> */}
+              <FilterByType selectedTypes={selectedTypes} handleFilterSelect={handleFilterSelect} isCheckboxDisabled={isCheckboxDisabled} />
+              <div className="m-4 flex flex-col md:flex-row md:space-x-2">
+                <label className="mt-2 text-center text-xl font-bold">
+                  Sort by:
+                </label>
+                <select
+                  id="sort"
+                  className="rounded-lg border-2 border-neutral-700 p-2"
+                  onChange={handleSort}
+                >
+                  <option value="NUMBER_LOW_TO_HIGH">
+                    Number - Low to High
+                  </option>
+                  <option value="NUMBER_HIGH_TO_LOW">
+                    Number - High to Low
+                  </option>
+                  <option value="ALPHA_A_TO_Z">Name - A to Z</option>
+                  <option value="ALPHA_Z_TO_A">Name - Z to A</option>
+                </select>
               </div>
-              <h3 className="text-center text-xl">Sort by:</h3>
-              <select id="sort" className="p-2" onChange={handleSort}>
-                <option value="NUMBER_LOW_TO_HIGH">Number - Low to High</option>
-                <option value="NUMBER_HIGH_TO_LOW">Number - High to Low</option>
-                <option value="ALPHA_A_TO_Z">Name - A to Z</option>
-                <option value="ALPHA_Z_TO_A">Name - Z to A</option>
-              </select>
-              {/* <button
-                type="button"
-                className="w-1/5 rounded-3xl bg-red-500 p-3 text-white"
-              >
-                Go!
-              </button> */}
             </div>
-            <InfiniteScroll
-              dataLength={nextScroll} //This is important field to render the next data
-              next={handleGetNext}
-              hasMore={nextScroll < results.length}
-              loader={<h4>Loading...</h4>}
-            >
+            {results.length > 0 ? (
+              <InfiniteScroll
+                dataLength={nextScroll} //This is important field to render the next data
+                next={handleGetNext}
+                hasMore={nextScroll < results.length}
+                loader={<h4>Loading...</h4>}
+              >
+                <div className="flex w-full flex-wrap justify-center">
+                  {
+                    results
+                      ?.slice(0, nextScroll)
+                      .map((pokemon: PokemonResult) => (
+                        <PokemonCard {...pokemon} key={pokemon.details.id} />
+                      ))
+                  }
+                </div>
+              </InfiniteScroll>
+            ) : (
               <div className="flex w-full flex-wrap justify-center">
-                {results.length > 0 ? (
-                  results
-                    ?.slice(0, nextScroll)
-                    .map((pokemon: PokemonResult) => (
-                      <PokemonCard {...pokemon} key={pokemon.details.id} />
-                    ))
+                {pokemonList.length > 0 ? (
+                  <div className="m-4 text-4xl font-bold">No results</div>
                 ) : (
-                  <div>No results</div>
+                  <CardSkeleton />
                 )}
               </div>
-            </InfiniteScroll>
-            {/* <i class="fas fa-spinner results__loading--spinner"></i> */}
+            )}
           </div>
         </div>
       </section>

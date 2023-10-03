@@ -28,14 +28,6 @@ const Nav = () => {
             Home
           </Link>
         </li>
-        <li className="mx-3">
-          <Link
-            href="#"
-            className="text-lg font-medium text-neutral-900 duration-200 hover:text-white"
-          >
-            Dark/Light Icon
-          </Link>
-        </li>
         {!user ? (
           <>
             <li className="mx-3">
