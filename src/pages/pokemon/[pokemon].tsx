@@ -28,7 +28,6 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 export const getStaticProps: GetStaticProps = (async (context) => {
-  // console.log(context.params)
   const res = await fetch(
     `https://pokeapi.co/api/v2/pokemon/${context.params?.pokemon}`,
   );
@@ -69,8 +68,6 @@ export default function PokemonInfoPage({
       <section id="landing" className="bg-red-500">
         <Nav />
       </section>
-
-      {/* <div>{pokemonInfo.name}</div> */}
       <div className="w-full py-2">
         <div className="mx-auto my-0 w-full max-w-6xl">
           <div className="flex flex-col items-center">
@@ -78,14 +75,13 @@ export default function PokemonInfoPage({
               #{pokemonInfo.id}-{pokemonInfo.name.toUpperCase()}
             </div>
             <div className="flex flex-col md:flex-row">
-              <figure className="w-1/2 rounded-lg border border-neutral-400">
+              <figure className="w-full max-w-sm md:w-1/2 md:max-w-none rounded-lg border border-neutral-400">
                 <Image
-                  //  className="mr-3"
                   src={
                     pokemonInfo.sprites.other["official-artwork"]
                       .front_default ?? pokemonInfo.sprites.front_default
                   }
-                  className="px-4 pb-0"
+                  className="px-4 pb-0 "
                   width={900}
                   height={0}
                   alt=""
@@ -104,10 +100,7 @@ export default function PokemonInfoPage({
                   )}
                 </div>
               </figure>
-              <div className="flex w-1/2 flex-col items-center">
-                {/* <div className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
-                  ADD TO TEAM
-                </div> */}
+              <div className="flex w-full md:w-1/2 flex-col items-center">
                 <TeamMenu pokemon={{
                   name: pokemonInfo.name,
                   ability: wordFormatter(pokemonInfo.abilities[0].ability.name),
@@ -151,9 +144,6 @@ export default function PokemonInfoPage({
                   {abilities.map((ability: string, index) => {
                     return (
                       <span className="text-xl">
-                        {/* {`${ability.charAt(0).toUpperCase()}${ability
-                          .slice(1)
-                          .replace("-", " ")}`} */}
                         {`${wordFormatter(ability)}`}
                         {index !== abilities.length - 1 && ", "}
                       </span>
@@ -235,12 +225,11 @@ export function TeamMenu(props: {pokemon: PokemonDefaultData}) {
 
   },[teamPokemon.data])
 
-  //might need to figure out scrolling
   return (
     <div className="">
       <Menu as="div" className="relative inline-block text-center">
         <div>
-          <Menu.Button className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
+          <Menu.Button className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white mt-4 md:m-0">
             ADD TO TEAM
           </Menu.Button>
         </div>
@@ -268,17 +257,6 @@ export function TeamMenu(props: {pokemon: PokemonDefaultData}) {
                   )}
                 </Menu.Item>
               ))}
-              {/* <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active ? 'bg-red-500 text-white' : 'text-gray-900'
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                  >
-                    Edit
-                  </button>
-                )}
-              </Menu.Item> */}
             </div>
           </Menu.Items>
         </Transition>

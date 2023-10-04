@@ -19,7 +19,6 @@ const TeamCard: React.FC<Props> = ({ name, teamId, onClick }) => {
       >
         <h2 className="text-2xl font-bold">{name}</h2>
       </div>
-      {/* <TrashIcon className="h-6 w-6 text-red-500 hover:opacity-80 duration-200 cursor-pointer" onClick={}/> */}
       <MyModal teamId={teamId} />
     </div>
   );
@@ -32,36 +31,11 @@ export function MyModal(props: { teamId: string }) {
 
   const { query } = useRouter();
 
-  // const teams = api.teams.getUserTeamsById.useQuery(
-  //   props.userId
-  // );
-
-  // const addTeam = api.teams.teamCreate.useMutation();
-
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   resetField,
-  //   formState: { errors },
-  // } = useForm<Inputs>();
-
-  // //submit to DB
-  // const onSubmit: SubmitHandler<Inputs> = (data) => {
-  //   addTeam.mutate({
-  //     teamName: data.teamname,
-  //     userId: props.userId,
-  //   },
-  //   {onSuccess: () => teams.refetch()}
-  //   );
-
-  // };
-
   const teams = api.teams.getUserTeamsById.useQuery(query.userId as string);
 
   const deleteTeam = api.teams.deleteTeam.useMutation();
 
   const handleConfirm = () => {
-    console.log(props.teamId)
     deleteTeam.mutate(props.teamId, { onSuccess: () => teams.refetch() });
     closeModal();
   };

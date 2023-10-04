@@ -214,7 +214,6 @@ export default function Home() {
   };
 
   const handleSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value);
     switch (event.target.value) {
       case "NUMBER_LOW_TO_HIGH":
         setResults(
@@ -319,26 +318,6 @@ export default function Home() {
         <div className="w-full py-6">
           <div className="mx-auto my-0 w-full max-w-6xl">
             <div className="flex flex-col items-center">
-              {/* <div className="mx-4 flex w-full flex-col items-center bg-amber-100">
-                <h1 className="m-2 text-4xl font-bold">Filter By Type</h1>
-                <div id="filter">
-                  <div className="my-2 flex w-full max-w-5xl flex-wrap items-center justify-center">
-                    {pokemonTypeNames.map((type) => (
-                      <div className="mx-2 my-2 flex justify-between">
-                        <input
-                          className="mx-3"
-                          type="checkbox"
-                          name="type-filter"
-                          value={type}
-                          onChange={handleFilterSelect}
-                          disabled={isCheckboxDisabled(type)}
-                        />
-                        <PokemonType type={type} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div> */}
               <FilterByType selectedTypes={selectedTypes} handleFilterSelect={handleFilterSelect} isCheckboxDisabled={isCheckboxDisabled} />
               <div className="m-4 flex flex-col md:flex-row md:space-x-2">
                 <label className="mt-2 text-center text-xl font-bold">

@@ -40,7 +40,6 @@ const TeamProfilePage = () => {
   );
 
 
-
   const handleSelectTeam = (teamId: string) => {
     setSelectedTeam(teams.data?.find((team) => team.teamId === teamId));
   };
@@ -76,13 +75,6 @@ const TeamProfilePage = () => {
     }
   }, [pokemon.data]);
 
-
-
-
-  // useEffect(() => {
-  //   // console.log("yesss")
-  // },[selectedTeam])
-
   if (!user) return null;
   if (user.id !== query.userId) return null;
 
@@ -100,21 +92,14 @@ const TeamProfilePage = () => {
                   <div className="m-4 text-3xl font-bold text-neutral-900">
                     NO TEAMS
                   </div>
-                  {/* <div className="mb-2 flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white hover:opacity-80 duration-200">
-                  CREATE NEW TEAM
-                </div> */}
                   <MyModal userId={user.id} />
                 </>
               ) : (
-                <div className="flex w-full flex-col space-x-20 md:flex-row">
-                  <div className="flex w-1/2 flex-col items-center p-4">
+                <div className="flex w-full flex-col-reverse md:space-x-20 md:flex-row">
+                  <div className="flex w-full md:w-1/2 flex-col items-center p-4">
                     <div className="m-4 text-3xl font-bold text-neutral-900">
                       MY TEAMS
                     </div>
-                    {/* Team Cards */}
-                    {/* <div className="mb-2 flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white">
-                      CREATE NEW TEAM
-                    </div> */}
                     <MyModal userId={user.id} />
 
                     <div className="flex max-h-[700px] w-full flex-col items-center overflow-x-hidden overflow-y-scroll p-1 scrollbar-thin scrollbar-thumb-neutral-300 scrollbar-track-rounded-md scrollbar-thumb-rounded-md">
@@ -129,7 +114,7 @@ const TeamProfilePage = () => {
                     </div>
                   </div>
 
-                  <div className="flex w-1/2 flex-col items-center p-4">
+                  <div className="flex w-full md:w-1/2 flex-col items-center p-4">
                     <div className="m-4 text-3xl font-bold text-neutral-900">
                       {selectedTeam ? `${selectedTeam.teamName}` : "PREVIEW"}
                     </div>
@@ -143,7 +128,7 @@ const TeamProfilePage = () => {
                       </Link>
                     )}
                     {/* Team Preview */}
-                    <div className="flex w-full flex-col flex-wrap items-center justify-center md:flex-row">
+                    <div className="flex w-full flex-col md:flex-wrap items-center justify-center md:flex-row">
                       {previewArray.map((pokemon: PokemonPreview, index) => (
                         <TeamPreviewView
                           name={pokemon.name}

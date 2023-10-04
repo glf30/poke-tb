@@ -282,8 +282,6 @@ export default function TeamEditPage() {
 
   const [currentPokemon, setCurrentPokemon] = useState<Pokemon>();
 
-  // const [abilities, setAbilities] = useState<string[]>([]);
-
   const {
     register,
     handleSubmit,
@@ -324,8 +322,6 @@ export default function TeamEditPage() {
 
   //submit to DB
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log("DATA");
-    console.log(data);
     if (currentPokemon !== undefined) {
       updatePokemon.mutate(
         {
@@ -356,17 +352,7 @@ export default function TeamEditPage() {
           onError: () => failUpdateToast(),
         },
       );
-      // console.log(currentPokemon)
       successUpdateToast();
-      // resetField("ability");
-      // resetField("item");
-      // resetField("nature");
-      // resetField("move1");
-      // resetField("move2");
-      // resetField("move3");
-      // resetField("move4");
-      console.log("AGAIN");
-      console.log(data);
       setCurrentPokemon(currentPokemon);
     }
   };
@@ -434,45 +420,8 @@ export default function TeamEditPage() {
     }
   }, [pokemon.data]);
 
-  // useEffect(() => {
-  //   if (pokemonInfoArray.length > 0 && currentPokemon !== undefined) {
-  //     const abilitiesTemp: string[] = [];
-  //     pokemonInfoArray
-  //       .find((pokemon) => currentPokemon.name === pokemon.name)
-  //       .abilities.forEach((ability: { ability: { name: string } }) => {
-  //         if (!abilitiesTemp.includes(ability.ability.name)) {
-  //           abilitiesTemp.push(ability.ability.name);
-  //         }
-  //       });
-  //     setAbilities([...abilitiesTemp]);
-  //   }
-  //   console.log("ARTICUNO");
-  // }, [pokemonInfoArray, currentPokemon]);
-
-  // useEffect(() => {
-  //   if (currentPokemon !== undefined && abilities[0] !== undefined) {
-  //     if (currentPokemon.ability.toLowerCase() !== abilities[0].toLowerCase()) {
-  //       console.log("UMMMMMMMMM")
-  //       console.log(abilities[0])
-  //       console.log(currentPokemon.ability)
-  //       setValue("ability", currentPokemon?.ability);
-  //     }
-  //   }
-  // }, []);
-
   useEffect(() => {
     if (currentPokemon !== undefined) {
-      console.log("weird stfff");
-      // console.log(selectAbility);
-      // setSelectAbility(currentPokemon.ability);
-      // setSelectItem(currentPokemon.item);
-      // setSelectNature(currentPokemon.nature);
-      // setSelectMove1(currentPokemon.move1);
-      // setSelectMove2(currentPokemon.move2);
-      // setSelectMove3(currentPokemon.move3);
-      // setSelectMove4(currentPokemon.move4);
-      // console.log(selectAbility);
-      console.log(currentPokemon.ability);
       reset({
         ability: currentPokemon.ability,
         item: currentPokemon.item,
@@ -484,7 +433,6 @@ export default function TeamEditPage() {
       });
       setValue("ability", currentPokemon.ability);
     }
-    console.log("ZAPDOS");
   }, [currentPokemon]);
 
   if (!user) return null;
@@ -576,19 +524,7 @@ export default function TeamEditPage() {
                         id="abilities"
                         className="p-2"
                         {...register("ability")}
-                        // value={selectAbility}
-                        // onChange={(e) => setSelectAbility(e.target.value)}
-                        // defaultValue={currentPokemon.ability}
                       >
-                        {/* no duplicates glitches the ability selection */}
-                        {/* {abilities.map((ability: string) => (
-                          <option
-                            className="text-xl"
-                            value={`${wordFormatter(ability)}`}
-                          >
-                            {`${wordFormatter(ability)}`}
-                          </option>
-                        ))} */}
                         {pokemonInfoArray
                           .find(
                             (pokemon) => currentPokemon.name === pokemon.name,
@@ -612,11 +548,7 @@ export default function TeamEditPage() {
                       <select
                         id="heldItems"
                         className="p-2"
-                        // defaultValue={currentPokemon.item}
-                        // value={currentPokemon.item}
                         {...register("item")}
-                        // value={selectItem}
-                        // onChange={(e) => setSelectItem(e.target.value)}
                       >
                         {heldItems.map((item: string) => (
                           <option className="text-xl" value={`${item}`}>
@@ -632,10 +564,7 @@ export default function TeamEditPage() {
                       <select
                         id="natures"
                         className="p-2"
-                        // defaultValue={currentPokemon.nature}
                         {...register("nature")}
-                        // value={selectNature}
-                        // onChange={(e) => setSelectNature(e.target.value)}
                       >
                         {natures.map((nature: string) => (
                           <option className="text-xl" value={`${nature}`}>
@@ -646,7 +575,7 @@ export default function TeamEditPage() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col space-y-3">
+                  <div className="flex flex-col space-y-3 m-4 md:m-0">
                     <h5 className="text-center font-bold">Moves</h5>
                     <div>
                       <label htmlFor="" className="font-bold">
@@ -655,15 +584,7 @@ export default function TeamEditPage() {
                       <select
                         id="move1"
                         className="p-2"
-                        // defaultValue={
-                        //   currentPokemon.move1 ??
-                        //   pokemonInfoArray.find(
-                        //     (pokemon) => currentPokemon.name === pokemon.name,
-                        //   ).moves[0].move.name
-                        // }
                         {...register("move1")}
-                        // value={selectMove1}
-                        // onChange={(e) => setSelectMove1(e.target.value)}
                       >
                         {pokemonInfoArray
                           .find(
@@ -686,15 +607,7 @@ export default function TeamEditPage() {
                       <select
                         id="move2"
                         className="p-2"
-                        // defaultValue={
-                        //   currentPokemon.move2 ??
-                        //   pokemonInfoArray.find(
-                        //     (pokemon) => currentPokemon.name === pokemon.name,
-                        //   ).moves[0].move.name
-                        // }
                         {...register("move2")}
-                        // value={selectMove2}
-                        // onChange={(e) => setSelectMove2(e.target.value)}
                       >
                         {pokemonInfoArray
                           .find(
@@ -717,15 +630,7 @@ export default function TeamEditPage() {
                       <select
                         id="move3"
                         className="p-2"
-                        // defaultValue={
-                        //   currentPokemon.move3 ??
-                        //   pokemonInfoArray.find(
-                        //     (pokemon) => currentPokemon.name === pokemon.name,
-                        //   ).moves[0].move.name
-                        // }
                         {...register("move3")}
-                        // value={selectMove3}
-                        // onChange={(e) => setSelectMove3(e.target.value)}
                       >
                         {pokemonInfoArray
                           .find(
@@ -748,15 +653,7 @@ export default function TeamEditPage() {
                       <select
                         id="move4"
                         className="p-2"
-                        // defaultValue={
-                        //   currentPokemon.move4 ??
-                        //   pokemonInfoArray.find(
-                        //     (pokemon) => currentPokemon.name === pokemon.name,
-                        //   ).moves[0].move.name
-                        // }
                         {...register("move4")}
-                        // value={selectMove4}
-                        // onChange={(e) => setSelectMove4(e.target.value)}
                       >
                         {pokemonInfoArray
                           .find(
@@ -776,8 +673,7 @@ export default function TeamEditPage() {
                 </div>
               </div>
 
-              {/*  */}
-              <table className="w-full table-auto text-center text-xl">
+              <table className="w-3/4 table-auto text-center text-xl">
                 <thead>
                   <tr>
                     <th></th>
@@ -969,7 +865,7 @@ export default function TeamEditPage() {
                   </tr>
                 </tbody>
               </table>
-              <div className="flex flex-col items-center md:m-2 md:mt-3 md:flex-row md:space-x-4">
+              <div className="flex flex-col items-center my-2 space-y-2 md:m-2 md:mt-3 md:flex-row md:space-x-4 md:space-y-0">
                 <button
                   type="submit"
                   className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-green-600 p-4 text-center font-bold text-white hover:opacity-80 duration-200"
@@ -985,7 +881,7 @@ export default function TeamEditPage() {
                 </button>
               </div>
               {/* Team */}
-              <div className="flex flex-row">
+              <div className="flex flex-col md:flex-row">
                 {pokemonInfoArray.map((pokemon) => (
                   <div
                     onClick={() => handleSetCurrentPokemon(pokemon.pokemonId)}
