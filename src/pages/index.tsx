@@ -282,7 +282,7 @@ export default function Home() {
         <Nav />
         <header id="search">
           <div className="mx-3 flex flex-col items-center py-6">
-            <h1 className="mb-6 text-center text-7xl font-bold text-neutral-900">
+            <h1 className="md:mb-6 text-center text-5xl p-16 pb-4 md:p-0 md:text-7xl font-bold text-neutral-900">
               Choose a Pokemon!
             </h1>
             <div className="flex w-full max-w-xl items-center rounded-full border-2 border-white bg-white p-2">

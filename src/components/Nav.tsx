@@ -6,7 +6,7 @@ import { UserButton, useUser } from "@clerk/nextjs";
 const Nav = () => {
   const { user } = useUser();
   return (
-    <nav className="mx-auto flex h-24 w-full max-w-6xl flex-row justify-between px-5 py-2">
+    <nav className="fixed z-10 md:relative mx-auto flex h-24 w-full max-w-6xl flex-row justify-between px-5 py-2 bg-red-500">
       <div className="flex items-center">
         <figure className="flex h-14 w-14 items-center justify-center">
           <Image
