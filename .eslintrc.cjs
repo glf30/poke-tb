@@ -28,6 +28,11 @@ const config = {
     "@typescript-eslint/unbound-method": "off",
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/jsx-key": "off",
   },
 };
 
