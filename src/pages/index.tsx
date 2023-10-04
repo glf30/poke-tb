@@ -44,7 +44,7 @@ const pokemonTypeNames = [
   "fairy",
 ];
 
-const pokeLimit = 493;
+const pokeLimit = 1010;
 
 export default function Home() {
   const { user } = useUser();
