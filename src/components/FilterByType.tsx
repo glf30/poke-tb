@@ -41,7 +41,7 @@ const FilterByType: React.FC<FilterByTypeProps> = ({
   }
 
   return (
-    <div className="mx-4 flex w-full max-w-lg md:max-w-3xl lg:max-w-5xl rounded-lg flex-col items-center bg-amber-100">
+    <div className="mx-4 flex w-full max-w-sm md:max-w-3xl lg:max-w-5xl rounded-lg flex-col items-center bg-amber-100">
       <div className="flex flex-row justify-center items-center">
         <h1 className="m-2 text-4xl font-bold">Filter By Type</h1>
         <ChevronDownIcon width={40} className={`cursor-pointer  ml-1 mt-2 text-neutral-900 duration-200 ${

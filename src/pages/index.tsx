@@ -279,7 +279,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section id="landing" className="bg-red-500">
-        <div className="w-full fixed md:flex z-10">
+        <div className="w-full fixed md:relative z-10">
           <Nav />
         </div>
         <header id="search">
@@ -287,7 +287,7 @@ export default function Home() {
             <h1 className="md:mb-6 text-center text-5xl p-16 pb-4 md:p-0 md:text-7xl font-bold text-neutral-900">
               Choose a Pokemon!
             </h1>
-            <div className="flex w-full max-w-xl items-center rounded-full border-2 border-white bg-white p-2">
+            <div className="flex w-full max-w-sm md:max-w-xl items-center rounded-full border-2 border-white bg-white p-2">
               <input
                 type="text"
                 className="w-full pr-8 text-center indent-5 text-lg md:text-2xl outline-none"
