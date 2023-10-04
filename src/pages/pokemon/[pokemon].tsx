@@ -76,7 +76,7 @@ export default function PokemonInfoPage({
               #{pokemonInfo.id}-{pokemonInfo.name.toUpperCase()}
             </div>
             <div className="flex flex-col md:flex-row">
-              <figure className="w-full max-w-sm rounded-lg border border-neutral-400 md:w-1/2 md:max-w-none">
+              <figure className="w-full max-w-sm rounded-lg md:border md:border-neutral-400 md:w-1/2 md:max-w-none">
                 <Image
                   src={
                     pokemonInfo.sprites.other["official-artwork"]
