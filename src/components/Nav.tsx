@@ -4,10 +4,11 @@ import Link from "next/link";
 import { UserButton, useUser } from "@clerk/nextjs";
 
 const Nav = () => {
+
   const { user } = useUser();
   return (
-    <nav className="fixed z-10 md:relative mx-auto flex h-24 w-full max-w-6xl flex-row justify-between px-5 py-2 bg-red-500">
-      <div className="flex items-center">
+    <nav className="fixed z-10 mx-auto flex h-24 w-full max-w-6xl md:flex-row justify-between bg-red-500 px-5 md:relative md:py-2">
+      <Link href="/" className="flex items-center">
         <figure className="flex h-14 w-14 items-center justify-center">
           <Image
             id="poke-logo"
@@ -18,9 +19,9 @@ const Nav = () => {
           />
         </figure>
         <h1 className="text-2xl font-semibold text-neutral-900">PokeTB</h1>
-      </div>
+      </Link>
       <ul className="flex items-center justify-between">
-        <li className="mx-3">
+        <li className="hidden sm:block mx-3">
           <Link
             href="/"
             className="text-lg font-medium text-neutral-900 duration-200 hover:text-white"
@@ -30,7 +31,7 @@ const Nav = () => {
         </li>
         {!user ? (
           <>
-            <li className="mx-3">
+            <li className="mx-3 hidden md:block">
               <Link
                 href="/sign-in"
                 className="text-lg font-medium text-neutral-900 duration-200 hover:text-white"
@@ -48,11 +49,11 @@ const Nav = () => {
             </li>
           </>
         ) : (
-          <>
-            <li className="mx-3">
+          <div className="flex flex-row-reverse md:flex-row items-center">
+            <li className="mx-3 my-1">
               <Link
                 href={`/teams/${user.id}`}
-                className="text-lg font-medium text-neutral-900 duration-200 hover:text-white"
+                className="sm:text-lg font-medium text-neutral-900 duration-200 hover:text-white"
               >
                 My Teams
               </Link>
@@ -60,8 +61,8 @@ const Nav = () => {
             <li className="mx-3">
               <UserButton afterSignOutUrl="/" />
             </li>
-          </>
-        )}
+          </div>
+        )}      
       </ul>
     </nav>
   );
