@@ -72,7 +72,7 @@ export default function PokemonInfoPage({
       <div className="w-full py-2">
         <div className="mx-auto my-0 w-full max-w-6xl">
           <div className="flex flex-col items-center">
-            <div className="mb-8 text-center text-7xl font-bold text-neutral-900">
+            <div className="mb-8 text-center text-4xl md:text-7xl font-bold text-neutral-900">
               #{pokemonInfo.id}-{pokemonInfo.name.toUpperCase()}
             </div>
             <div className="flex flex-col md:flex-row">
