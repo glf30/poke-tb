@@ -7,7 +7,7 @@ const Nav = () => {
 
   const { user } = useUser();
   return (
-    <nav className="fixed z-10 mx-auto flex h-24 w-full max-w-6xl md:flex-row justify-between bg-red-500 px-5 md:relative md:py-2">
+    <nav className="z-10 mx-auto flex h-24 w-full max-w-6xl md:flex-row justify-between bg-red-500 px-5 md:relative md:py-2">
       <Link href="/" className="flex items-center">
         <figure className="flex h-14 w-14 items-center justify-center">
           <Image

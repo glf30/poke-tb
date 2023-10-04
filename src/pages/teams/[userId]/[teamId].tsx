@@ -883,15 +883,15 @@ export default function TeamEditPage() {
               {/* Team */}
               <div className="flex flex-col md:flex-row">
                 {pokemonInfoArray.map((pokemon) => (
-                  <div
+                  <a
                     onClick={() => handleSetCurrentPokemon(pokemon.pokemonId)}
-                    className="cursor-pointer"
+                    className="cursor-pointer" href="#"
                   >
                     <TeamPreviewView
                       name={pokemon.name}
                       imgUrl={pokemon.sprites.front_default}
                     />
-                  </div>
+                  </a>
                 ))}
               </div>
             </form>

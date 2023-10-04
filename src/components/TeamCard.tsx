@@ -13,12 +13,12 @@ interface Props {
 const TeamCard: React.FC<Props> = ({ name, teamId, onClick }) => {
   return (
     <div className="flex w-full items-center">
-      <div
+      <a href="#"
         className="m-1 flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-300 p-4 duration-200 hover:opacity-70"
         onClick={() => onClick(teamId)}
       >
         <h2 className="text-2xl font-bold">{name}</h2>
-      </div>
+      </a>
       <MyModal teamId={teamId} />
     </div>
   );
