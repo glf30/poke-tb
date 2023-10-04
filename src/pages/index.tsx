@@ -4,7 +4,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { api } from "~/utils/api";
 import React, { useEffect, useState } from "react";
 import PokemonCard from "~/components/PokemonCard";
-import PokemonType from "~/components/PokemonType";
 import Nav from "~/components/Nav";
 
 import { useUser } from "@clerk/nextjs";
@@ -148,10 +147,6 @@ export default function Home() {
     }
   };
 
-//  useEffect(() => {
-//     handleFilter();
-//   }, [searchQuery]);
-
   useEffect(() => {
     handleFilter();
   }, [selectedTypes, searchQuery]);
@@ -163,19 +158,6 @@ export default function Home() {
           `https://pokeapi.co/api/v2/pokemon/?limit=${pokeLimit}`,
         );
         const pokemonList: PokemonList = await res.json();
-
-        // const pokemonListPromises = pokemonList.results.map(
-        //   async (pokemon: PokemonResult) => {
-        //     const resPokemonInfo = await fetch(`${pokemon.url}`);
-        //     return await resPokemonInfo.json();
-        //   },
-        // );
-
-        // const pokemonData = await Promise.all(pokemonListPromises);
-
-        // pokemonList.results.forEach((pokemon: PokemonResult, index: number) => {
-        //   pokemon.details = pokemonData[index];
-        // });
 
         const pokemonListPromises = pokemonList.results.map(
           async (pokemon: PokemonResult) => {

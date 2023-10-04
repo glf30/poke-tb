@@ -32,7 +32,7 @@ const Nav = () => {
           <>
             <li className="mx-3">
               <Link
-                href="sign-in"
+                href="/sign-in"
                 className="text-lg font-medium text-neutral-900 duration-200 hover:text-white"
               >
                 Sign In
@@ -40,7 +40,7 @@ const Nav = () => {
             </li>
             <li className="group mx-3 cursor-pointer rounded-xl border border-white bg-white p-2">
               <Link
-                href="sign-up"
+                href="/sign-up"
                 className="text-lg font-medium text-neutral-900 duration-200 group-hover:text-red-500"
               >
                 Sign Up
@@ -57,15 +57,6 @@ const Nav = () => {
                 My Teams
               </Link>
             </li>
-            {/* <li className="mx-3 rounded-xl border border-white p-2 bg-white group cursor-pointer">
-              <Link
-                href={`/teams/${user.id}`}
-                className="text-lg font-medium text-neutral-900 group-hover:text-red-500 duration-200"
-              >
-                My Teams
-              </Link>
-              
-            </li> */}
             <li className="mx-3">
               <UserButton afterSignOutUrl="/" />
             </li>

@@ -11,14 +11,15 @@ import PokemonType from "~/components/PokemonType";
 import { Menu, Transition } from "@headlessui/react";
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
 type PokemonDefaultData = {
-  name: string,
-  ability: string,
-  move: string,
-}
+  name: string;
+  ability: string;
+  move: string;
+};
 
 export const getStaticPaths = (async () => {
   return {
@@ -75,7 +76,7 @@ export default function PokemonInfoPage({
               #{pokemonInfo.id}-{pokemonInfo.name.toUpperCase()}
             </div>
             <div className="flex flex-col md:flex-row">
-              <figure className="w-full max-w-sm md:w-1/2 md:max-w-none rounded-lg border border-neutral-400">
+              <figure className="w-full max-w-sm rounded-lg border border-neutral-400 md:w-1/2 md:max-w-none">
                 <Image
                   src={
                     pokemonInfo.sprites.other["official-artwork"]
@@ -100,12 +101,16 @@ export default function PokemonInfoPage({
                   )}
                 </div>
               </figure>
-              <div className="flex w-full md:w-1/2 flex-col items-center">
-                <TeamMenu pokemon={{
-                  name: pokemonInfo.name,
-                  ability: wordFormatter(pokemonInfo.abilities[0].ability.name),
-                  move: wordFormatter(pokemonInfo.moves[0].move.name)
-                }}/>
+              <div className="flex w-full flex-col items-center md:w-1/2">
+                <TeamMenu
+                  pokemon={{
+                    name: pokemonInfo.name,
+                    ability: wordFormatter(
+                      pokemonInfo.abilities[0].ability.name,
+                    ),
+                    move: wordFormatter(pokemonInfo.moves[0].move.name),
+                  }}
+                />
                 {/* Stats */}
                 <div className="m-4 mb-1 text-3xl font-bold text-neutral-900">
                   BASE STATS
@@ -172,64 +177,88 @@ export default function PokemonInfoPage({
   );
 }
 
-export function TeamMenu(props: {pokemon: PokemonDefaultData}) {
-  
+export function TeamMenu(props: { pokemon: PokemonDefaultData }) {
   const [selectedTeamId, setSelectedTeamId] = useState("");
 
   const { user } = useUser();
-  const teams = api.teams.getUserTeamsById.useQuery(user?.id as string,);
+  const teams = api.teams.getUserTeamsById.useQuery(user?.id as string);
 
-  const teamPokemon = api.pokemon.getTeamPokemonById.useQuery(
-    selectedTeamId
-  );
+  const teamPokemon = api.pokemon.getTeamPokemonById.useQuery(selectedTeamId);
 
   const addPokemon = api.pokemon.pokemonCreate.useMutation();
 
   const handleSelect = (teamId: string) => {
-    setSelectedTeamId(teamId)
-  }
+    setSelectedTeamId(teamId);
+  };
 
-  const successAddToTeam = () => toast.success(`${props.pokemon.name.toUpperCase()[0]}${props.pokemon.name.slice(1)} has been successfully added to your team!`, {
-    position: toast.POSITION.TOP_CENTER
-  });
+  const successAddToTeam = () =>
+    toast.success(
+      `${props.pokemon.name.toUpperCase()[0]}${props.pokemon.name.slice(
+        1,
+      )} has been successfully added to your team!`,
+      {
+        position: toast.POSITION.TOP_CENTER,
+      },
+    );
 
-  const failAddToTeam = () => toast.error(`Could not add ${props.pokemon.name.toUpperCase()[0]}${props.pokemon.name.slice(1)}. Server error`, {
-    position: toast.POSITION.TOP_CENTER
-  });
+  const failAddToTeam = () =>
+    toast.error(
+      `Could not add ${
+        props.pokemon.name.toUpperCase()[0]
+      }${props.pokemon.name.slice(1)}. Server error`,
+      {
+        position: toast.POSITION.TOP_CENTER,
+      },
+    );
 
-  const failAddToTeamSize = () => toast.error(`Could not add ${props.pokemon.name.toUpperCase()[0]}${props.pokemon.name.slice(1)}. This team is full`, {
-    position: toast.POSITION.TOP_CENTER
-  });
+  const failAddToTeamSize = () =>
+    toast.error(
+      `Could not add ${
+        props.pokemon.name.toUpperCase()[0]
+      }${props.pokemon.name.slice(1)}. This team is full`,
+      {
+        position: toast.POSITION.TOP_CENTER,
+      },
+    );
 
   //when data for individual team is successfully retrieved
   useEffect(() => {
-    if(teamPokemon.data !== undefined && selectedTeamId !== ""){
-      if(teamPokemon.data?.length <= 5){
-        addPokemon.mutate({
-          name: props.pokemon.name,
-          teamId: selectedTeamId,
-          ability: props.pokemon.ability,
-          move1: props.pokemon.move,
-          move2: props.pokemon.move,
-          move3: props.pokemon.move,
-          move4: props.pokemon.move,
-        }, {onSuccess: () => successAddToTeam(), onError: () => failAddToTeam()});
-        
-        
+    if (teamPokemon.data !== undefined && selectedTeamId !== "") {
+      if (teamPokemon.data?.length <= 5) {
+        addPokemon.mutate(
+          {
+            name: props.pokemon.name,
+            teamId: selectedTeamId,
+            ability: props.pokemon.ability,
+            move1: props.pokemon.move,
+            move2: props.pokemon.move,
+            move3: props.pokemon.move,
+            move4: props.pokemon.move,
+          },
+          {
+            onSuccess: () => successAddToTeam(),
+            onError: () => failAddToTeam(),
+          },
+        );
       } else {
         //6 - already full team
         failAddToTeamSize();
       }
       setSelectedTeamId(""); //deselect a team
     }
-
-  },[teamPokemon.data])
+  }, [teamPokemon.data]);
 
   return (
     <div className="">
       <Menu as="div" className="relative inline-block text-center">
         <div>
-          <Menu.Button className="flex h-6 cursor-pointer items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white mt-4 md:m-0">
+          <Menu.Button
+            className={`mt-4 flex h-6 items-center justify-center rounded-lg bg-red-500 p-4 text-center font-bold text-white md:m-0 ${
+              user
+                ? `cursor-pointer duration-200 hover:opacity-80`
+                : `cursor-not-allowed`
+            }`}
+          >
             ADD TO TEAM
           </Menu.Button>
         </div>
@@ -247,7 +276,8 @@ export function TeamMenu(props: {pokemon: PokemonDefaultData}) {
               {teams.data?.map((team) => (
                 <Menu.Item>
                   {({ active }) => (
-                    <button onClick={() => handleSelect(team.teamId)}
+                    <button
+                      onClick={() => handleSelect(team.teamId)}
                       className={`${
                         active ? "bg-red-500 text-white" : "text-gray-900"
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
@@ -257,6 +287,21 @@ export function TeamMenu(props: {pokemon: PokemonDefaultData}) {
                   )}
                 </Menu.Item>
               ))}
+              
+            </div>
+            <div>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    href={`/${user?.id}`}
+                    className={`${
+                      active ? "bg-red-500 text-white" : "text-gray-900"
+                    } group flex w-full items-center rounded-md px-2 py-3 text-sm`}
+                  >
+                    Create New Team
+                  </Link>
+                )}
+              </Menu.Item>
             </div>
           </Menu.Items>
         </Transition>
