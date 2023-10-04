@@ -6,17 +6,8 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
-}
-
-model Example {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([name])
+  provider = "postgresql"
+  url   = env("DATABASE_URL")
 }
 
 model User {
@@ -57,6 +48,7 @@ model Pokemon {
   spatk_IV Int @default(31)
   spdef_IV Int @default(31)
   spe_IV Int @default(31)
+  createdAt DateTime @default(now())
   team Team @relation(fields: [teamId], references: [teamId], onDelete: Cascade)
   teamId String
 }

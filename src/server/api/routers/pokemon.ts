@@ -12,6 +12,9 @@ export const pokemonRouter = createTRPCRouter({
         where: {
           teamId: input,
         },
+        orderBy: {
+          createdAt: 'asc'
+        }
       });
       if (!pokemon) {
         throw new TRPCError({
