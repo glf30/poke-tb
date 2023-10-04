@@ -885,6 +885,7 @@ export default function TeamEditPage() {
                 {pokemonInfoArray.map((pokemon) => (
                   <div
                     onClick={() => handleSetCurrentPokemon(pokemon.pokemonId)}
+                    className="cursor-pointer"
                   >
                     <TeamPreviewView
                       name={pokemon.name}

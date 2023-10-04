@@ -11,7 +11,7 @@ type PokemonResult = {
 
 const PokemonCard = (props: PokemonResult) => {
   return (
-    <Link href={`/pokemon/${props.name}`} className="w-full max-w-xs mx-6 my-4 flex flex-col items-center rounded-lg border border-neutral-400 p-6">
+    <Link href={`/pokemon/${props.name}`} className="w-full max-w-xs mx-6 my-4 flex flex-col items-center rounded-lg border border-neutral-400 p-6 hover:scale-105 hover:shadow-xl duration-200">
       <figure className="flex h-52 w-52 items-center justify-center rounded-lg border border-neutral-400">
         <Image
           className=""

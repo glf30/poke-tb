@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 const TeamPreviewView = (props: {imgUrl: string, name: string}) => {
   return (
-    <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400">
+    <figure className="m-4 flex h-52 w-52 flex-col items-center justify-center rounded-lg border border-neutral-400 hover:scale-105 hover:shadow-xl duration-200">
     <Image
       className=""
       src={props.imgUrl}
