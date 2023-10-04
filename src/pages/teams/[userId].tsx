@@ -152,7 +152,7 @@ export default TeamProfilePage;
 
 
 export function MyModal(props: { userId: string }) {
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const teams = api.teams.getUserTeamsById.useQuery(
     props.userId

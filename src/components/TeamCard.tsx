@@ -27,7 +27,7 @@ const TeamCard: React.FC<Props> = ({ name, teamId, onClick }) => {
 export default TeamCard;
 
 export function MyModal(props: { teamId: string }) {
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { query } = useRouter();
 
