@@ -57,18 +57,34 @@ export const pokemonRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.db.pokemon.create({
+      const team = ctx.db.team.findFirst(
+        {
+            where: {
+                teamId: input.teamId
+            }
+        }
+      )
+
+      if(team.pokemon.length >= 6){
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Can only have 6 Pokemon on your team",
+        });
+      }
+
+      const pokemon = ctx.db.pokemon.create({
         data: {
           ...input,
         },
-      });
+      })
+
+      return pokemon;
     }),
 
   updatePokemon: privateProcedure
     .input(
       z.object({
         pokemonId: z.string(),
-        // name:   z.string(),
         level: z.number(),
         ability: z.string(),
         item: z.string(),
