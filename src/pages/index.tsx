@@ -279,11 +279,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section id="landing" className="bg-red-500">
-        <div className="w-full fixed md:relative z-10">
+        <div className="w-full fixed md:static z-10">
           <Nav />
         </div>
         <header id="search">
-          <div className="md:mx-3 w-full flex flex-col items-center py-6">
+          <div className="md:mx-3 flex flex-col items-center py-6">
             <h1 className="md:mb-6 text-center text-5xl p-16 pb-4 md:p-0 md:text-7xl font-bold text-neutral-900">
               Choose a Pokemon!
             </h1>
