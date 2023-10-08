@@ -87,24 +87,6 @@ export function MyModal(props: { teamId: string }) {
                   >
                     Are you sure you want to delete this team?
                   </Dialog.Title>
-                  {/* <div className="m-2 flex flex-col items-center justify-center">
-                    <input
-                      type="text"
-                      className="rounded-lg bg-neutral-200 p-2 indent-2"
-                      {...register("teamname", {
-                        required: true,
-                        maxLength: 20,
-                      })}
-                      maxLength={20}
-                      autoComplete="off"
-                    />
-                    {errors.teamname && (
-                      <span className="mt-2 text-xs text-red-800">
-                        This field is required
-                      </span>
-                    )}
-                  </div> */}
-
                   <div className="mt-4 flex items-center justify-center space-x-4">
                     <button
                       className="inline-flex justify-center rounded-md border border-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
