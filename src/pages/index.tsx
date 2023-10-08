@@ -10,6 +10,8 @@ import { useUser } from "@clerk/nextjs";
 import CardSkeleton from "~/components/CardSkeleton";
 import FilterByType from "~/components/FilterByType";
 
+import { usePokemon } from "~/queries/pokemon-state";
+
 type PokemonResult = {
   name: string;
   url: string;
@@ -60,6 +62,8 @@ export default function Home() {
     enabled: !!user,
   });
   const addUser = api.user.userCreate.useMutation();
+
+  const { data: pokemon } = usePokemon();
 
   useEffect(() => {
     if (user !== undefined) {
@@ -151,37 +155,14 @@ export default function Home() {
     handleFilter();
   }, [selectedTypes, searchQuery]);
 
+
   useEffect(() => {
-    const getPokemonData = async () => {
-      try {
-        const res = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/?limit=${pokeLimit}`,
-        );
-        const pokemonList: PokemonList = await res.json();
-
-        const pokemonListPromises = pokemonList.results.map(
-          async (pokemon: PokemonResult) => {
-            return fetch(`${pokemon.url}`).then((res) => res.json());
-          },
-        );
-
-        const pokemonData = await Promise.all(pokemonListPromises);
-
-        const updatedResults = pokemonList.results.map(
-          (pokemon: PokemonResult, index: number) => {
-            return { ...pokemon, details: pokemonData[index] };
-          },
-        );
-
-        setResults(updatedResults);
-        setPokemonList(updatedResults);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    getPokemonData();
-  }, []);
+    if(!!pokemon){
+      setResults(pokemon);
+      setPokemonList(pokemon);
+    }
+    
+  },[pokemon])
 
   const handleGetNext = () => {
     // less than 30 results left, make it go to the length of results and hasMore = false
