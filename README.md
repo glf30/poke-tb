@@ -10,4 +10,4 @@ npm run dev
 This application utilizes Next.js, Prisma, PostgreSQL (Neon), tRPC, Tailwind, and Clerkjs.
 
 ## Notes:
--Tera types and other generational features have been overlooked in favor of future proofing this application.  Possible plans to add them in the future
+-Tera types and other generational features have been overlooked in favor of future proofing this application.  Possible plans to add them in the future.
