@@ -20,7 +20,7 @@ export const usePokemon = () => {
         queryFn: async () => {
 
               const res = await fetch(
-                `https://pokeapi.co/api/v2/pokemon/?limit=101`, { cache: 'default' }
+                `https://pokeapi.co/api/v2/pokemon/?limit=1010`, { cache: 'default' }
               );
               const pokemonList: PokemonList = await res.json();
       
